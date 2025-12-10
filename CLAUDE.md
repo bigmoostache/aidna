@@ -52,39 +52,13 @@ The CLI auto-starts on first `./aidna` call.
 
 ## Useful Sequences
 
-Common operations starting with `~` to work from anywhere:
+All start with `~` to work from anywhere:
 
-```bash
-# Run all project checks
-./aidna "~,c,a"
-
-# Update all claude.json files
-./aidna "~,c,c"
-
-# Show file structure tree
-./aidna "~,b,a"
-
-# Browse CLAUDE.md files
-./aidna "~,b,b"
-
-# Start docker services
-./aidna "~,a,a"
-
-# Stop docker services
-./aidna "~,a,b"
-
-# Restart docker services
-./aidna "~,a,c"
-
-# Check file lengths
-./aidna "~,c,b,a"
-
-# Check folder file counts
-./aidna "~,c,b,b"
-
-# Check hardcoded secrets
-./aidna "~,c,b,e"
-
-# Check external tool status
-./aidna "~,c,d"
-```
+- `./aidna "~,c,a"`: Run all project checks
+- `./aidna "~,c,c"`: Update all claude.json files
+- `./aidna "~,c,d"`: Check external tool status
+- `./aidna "~,b,a"`: Show file structure tree
+- `./aidna "~,b,b"`: Browse CLAUDE.md files
+- `./aidna "~,a,a"`: Start docker services
+- `./aidna "~,a,b"`: Stop docker services
+- `./aidna "~,a,c"`: Restart docker services
