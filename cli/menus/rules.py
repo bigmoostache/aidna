@@ -36,7 +36,7 @@ def rules_menu(menu_stack, initial_selected=0):
                 _check_all_rules()
             elif choice == 1:
                 menu_stack.append({'menu': 'individual_checks', 'selected': 0})
-                _individual_checks_menu(menu_stack)
+                individual_checks_menu(menu_stack)
                 menu_stack.pop()
             elif choice == 2:
                 _update_claude_json()
@@ -44,7 +44,7 @@ def rules_menu(menu_stack, initial_selected=0):
                 _show_tool_status()
 
 
-def _individual_checks_menu(menu_stack, initial_selected=0):
+def individual_checks_menu(menu_stack, initial_selected=0):
     options = [
         "Check file lengths",
         "Check folder file counts",

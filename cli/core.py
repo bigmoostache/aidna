@@ -15,6 +15,10 @@ class RestartRequested(Exception):
     pass
 
 
+class GoToRoot(Exception):
+    pass
+
+
 def save_state(menu_stack):
     with open(STATE_FILE, 'w') as f:
         json.dump(menu_stack, f)
@@ -80,7 +84,7 @@ def render_menu(title, options, selected):
         else:
             output_lines.append(f"    [{key}] {option}")
     output_lines.append("")
-    output_lines.append("[a-z] Select  [B] Back  [R] Restart")
+    output_lines.append("[a-z] Select  [~] Root  [B] Back  [R] Restart")
 
     for line in output_lines:
         sys.stdout.write(f"{line}\033[K\n")
@@ -109,6 +113,8 @@ def select_menu(title, options, initial_selected=0):
             return -1
         elif key == 'R':  # Restart
             raise RestartRequested()
+        elif key == '~':  # Go to root
+            raise GoToRoot()
         elif key in 'abcdefghijklmnopqrstuvwxyz':
             idx = ord(key) - ord('a')
             if idx < len(options):

@@ -1,4 +1,10 @@
 {
+  "CLAUDE.md": {
+    "type": "file",
+    "size_kb": 1.8,
+    "lines": 65,
+    "description": "CLI development guide (architecture, adding menus/rules)"
+  },
   "menus": {
     "type": "folder",
     "size_kb": null,
@@ -25,14 +31,14 @@
   },
   "main.py": {
     "type": "file",
-    "size_kb": 2.86,
-    "lines": 101,
+    "size_kb": 3.28,
+    "lines": 113,
     "description": "CLI entry point and main menu routing"
   },
   "core.py": {
     "type": "file",
-    "size_kb": 6.48,
-    "lines": 228,
+    "size_kb": 6.96,
+    "lines": 246,
     "description": "Shared CLI functions (menu rendering, key input, screen control)"
   }
 }

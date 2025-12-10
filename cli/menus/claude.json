@@ -1,14 +1,14 @@
 {
   "__init__.py": {
     "type": "file",
-    "size_kb": 0.19,
-    "lines": 5,
+    "size_kb": 0.29,
+    "lines": 8,
     "description": "Menu module exports"
   },
   "rules.py": {
     "type": "file",
-    "size_kb": 11.23,
-    "lines": 310,
+    "size_kb": 12.29,
+    "lines": 346,
     "description": "Project rules menu (all checks, external tools integration)"
   },
   "services.py": {
@@ -19,8 +19,8 @@
   },
   "exploration.py": {
     "type": "file",
-    "size_kb": 5.08,
-    "lines": 161,
+    "size_kb": 11.35,
+    "lines": 344,
     "description": "Exploration menu (file structure tree)"
   }
 }

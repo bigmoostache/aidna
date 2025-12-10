@@ -6,10 +6,13 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cli.core import (
-    PROJECT_ROOT, STATE_FILE, RestartRequested,
+    PROJECT_ROOT, STATE_FILE, RestartRequested, GoToRoot,
     save_state, load_state, select_menu, clear_screen
 )
-from cli.menus import services_menu, exploration_menu, rules_menu
+from cli.menus import (
+    services_menu, exploration_menu, rules_menu,
+    claude_md_menu, individual_checks_menu
+)
 
 
 def main_menu(menu_stack, initial_selected=0):
@@ -72,6 +75,16 @@ def run_from_state(state):
         menu_stack.pop()
         if menu_stack:
             main_menu(menu_stack, menu_stack[-1].get('selected', 0))
+    elif current['menu'] == 'claude_md':
+        claude_md_menu(menu_stack, current.get('selected', 0))
+        menu_stack.pop()
+        if menu_stack:
+            run_from_state(menu_stack)
+    elif current['menu'] == 'individual_checks':
+        individual_checks_menu(menu_stack, current.get('selected', 0))
+        menu_stack.pop()
+        if menu_stack:
+            run_from_state(menu_stack)
 
     return menu_stack
 
@@ -89,7 +102,11 @@ def main():
             break
         except RestartRequested:
             save_state(menu_stack)
-            os.execv(sys.executable, [sys.executable] + sys.argv)
+            # Exit with code 42 to signal restart (shell will restart us)
+            sys.exit(42)
+        except GoToRoot:
+            # Reset to main menu and continue
+            menu_stack = [{'menu': 'main', 'selected': 0}]
 
 
 if __name__ == "__main__":

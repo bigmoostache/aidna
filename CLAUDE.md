@@ -19,6 +19,7 @@ The CLI auto-starts on first `./aidna` call.
 ### Navigation
 
 - `a-z` - Select menu option by letter (lowercase)
+- `~` - Go to CLI root (main menu)
 - `B` - Go back to parent menu (uppercase)
 - `R` - Restart CLI, preserves menu state (uppercase)
 - `Enter` - Select highlighted option
@@ -39,77 +40,51 @@ The CLI auto-starts on first `./aidna` call.
 
 ### Exploration
 - **Show file structure** - Tree view with descriptions from `claude.json`
-- **Set depth** - Control tree depth (default: 3)
-- **Select subfolder** - Focus on specific directory
+- **CLAUDE.md explorer** - Browse all CLAUDE.md files with parent/children context
+- **Set path** - Focus on specific directory
+- **Set depth** - Control tree depth (default: 2)
 
 ### Project Rules
-Automated code quality checks:
+- **Run all checks** - Execute all code quality checks at once
+- **Individual checks** - Run specific checks one at a time
+- **Update claude.json** - Sync file metadata across project
+- **External tool status** - Show installed/missing optional tools
 
-| Check | Description |
-|-------|-------------|
-| **[a] File lengths** | Files exceeding 700 lines |
-| **[b] Folder file counts** | Folders with more than 7 files |
-| **[c] Spaces in filenames** | Files/folders with spaces in names |
-| **[d] Folder depth** | Folders deeper than 5 levels |
-| **[e] Hardcoded secrets** | Passwords, API keys, tokens in code |
-| **[f] Cyclomatic complexity** | Complex functions (requires `radon`) |
-| **[g] Linting issues** | Code style issues (requires `ruff`) |
-| **[h] Security issues** | Security vulnerabilities (requires `bandit`) |
-| **[i] Check all rules** | Run all checks at once |
-| **[j] Update claude.json** | Sync file metadata and descriptions |
-| **[k] Missing claude.json** | Folders without documentation |
-| **[l] External tool status** | Show installed/missing tools |
+## Useful Sequences
 
-#### External Tools (Optional)
+Common operations starting with `~` to work from anywhere:
+
 ```bash
-pip install radon ruff bandit
+# Run all project checks
+./aidna "~,c,a"
+
+# Update all claude.json files
+./aidna "~,c,c"
+
+# Show file structure tree
+./aidna "~,b,a"
+
+# Browse CLAUDE.md files
+./aidna "~,b,b"
+
+# Start docker services
+./aidna "~,a,a"
+
+# Stop docker services
+./aidna "~,a,b"
+
+# Restart docker services
+./aidna "~,a,c"
+
+# Check file lengths
+./aidna "~,c,b,a"
+
+# Check folder file counts
+./aidna "~,c,b,b"
+
+# Check hardcoded secrets
+./aidna "~,c,b,e"
+
+# Check external tool status
+./aidna "~,c,d"
 ```
-
-## Project Structure
-
-Each folder has a `claude.json` file with metadata:
-```json
-{
-  "filename.py": {
-    "type": "file",
-    "size_kb": 5.2,
-    "lines": 150,
-    "description": "Brief description of the file"
-  }
-}
-```
-
-## Project Rules
-
-| Rule | Limit |
-|------|-------|
-| Max file lines | 700 |
-| Max files per folder | 7 |
-| Max folder depth | 5 |
-| Max cyclomatic complexity | 10 |
-
-## Key Files
-
-```
-cli/
-  main.py          # CLI entry point and main menu
-  core.py          # Shared functions (menus, input, display)
-  config.py        # Rule thresholds and patterns
-  rules.py         # Rule check implementations
-  rules_external.py # External tool integration (radon, ruff, bandit)
-  menus/
-    services.py    # Environment services menu
-    exploration.py # File structure exploration
-    rules.py       # Project rules menu
-aidna              # CLI control script
-environment/
-  services/
-    docker-compose.yml
-.env               # PORT_PREFIX and other config
-```
-
-## Modifying the CLI
-
-1. Edit files in `cli/`
-2. Run `./aidna R` to restart and reload changes
-3. CLI returns to the same menu position after restart

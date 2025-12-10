@@ -13,9 +13,9 @@
   },
   "CLAUDE.md": {
     "type": "file",
-    "size_kb": 3.36,
-    "lines": 115,
-    "description": "Instructions for Claude agents on how to use this project"
+    "size_kb": 1.5,
+    "lines": 52,
+    "description": "CLI usage guide (navigation, menus, commands)"
   },
   "body": {
     "type": "folder",
@@ -43,7 +43,7 @@
   },
   ".env": {
     "type": "file",
-    "size_kb": 0.01,
+    "size_kb": 0.02,
     "lines": null,
     "description": "Environment variables including PORT_PREFIX"
   },
@@ -55,8 +55,8 @@
   },
   "cli.sh": {
     "type": "file",
-    "size_kb": 0.05,
-    "lines": 3,
+    "size_kb": 0.46,
+    "lines": 19,
     "description": "CLI launcher script"
   }
 }
