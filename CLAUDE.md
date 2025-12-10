@@ -14,17 +14,6 @@ Use `./aidna` to interact with the project CLI:
 ./aidna Enter 1.0    # Press key with custom delay (seconds)
 ```
 
-The CLI auto-starts on first `./aidna` call.
-
-### Navigation
-
-- `a-z` - Select menu option by letter (lowercase)
-- `~` - Go to CLI root (main menu)
-- `B` - Go back to parent menu (uppercase)
-- `R` - Restart CLI, preserves menu state (uppercase)
-- `Enter` - Select highlighted option
-- `↑/↓` - Navigate menu options (arrow keys)
-
 ## CLI Menus
 
 ### Main Menu
