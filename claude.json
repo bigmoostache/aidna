@@ -1,0 +1,62 @@
+{
+  "mind": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "AI agent logic and decision-making components"
+  },
+  "cli": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Interactive CLI tool for project management"
+  },
+  "CLAUDE.md": {
+    "type": "file",
+    "size_kb": 3.36,
+    "lines": 115,
+    "description": "Instructions for Claude agents on how to use this project"
+  },
+  "body": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Docker services for the AI agent runtime"
+  },
+  "README.md": {
+    "type": "file",
+    "size_kb": 0.98,
+    "lines": 33,
+    "description": "Project documentation and overview"
+  },
+  "aidna": {
+    "type": "file",
+    "size_kb": 0.87,
+    "lines": null,
+    "description": "Helper script to interact with the CLI control session"
+  },
+  "environment": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Infrastructure and environment configuration"
+  },
+  ".env": {
+    "type": "file",
+    "size_kb": 0.01,
+    "lines": null,
+    "description": "Environment variables including PORT_PREFIX"
+  },
+  ".claude": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Claude Code local settings"
+  },
+  "cli.sh": {
+    "type": "file",
+    "size_kb": 0.05,
+    "lines": 3,
+    "description": "CLI launcher script"
+  }
+}

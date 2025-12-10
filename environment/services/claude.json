@@ -1,0 +1,8 @@
+{
+  "docker-compose.yml": {
+    "type": "file",
+    "size_kb": 0.34,
+    "lines": 16,
+    "description": "PostgreSQL database service with PORT_PREFIX-based port mapping"
+  }
+}

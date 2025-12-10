@@ -1,0 +1,26 @@
+{
+  "__init__.py": {
+    "type": "file",
+    "size_kb": 0.19,
+    "lines": 5,
+    "description": "Menu module exports"
+  },
+  "rules.py": {
+    "type": "file",
+    "size_kb": 11.23,
+    "lines": 310,
+    "description": "Project rules menu (all checks, external tools integration)"
+  },
+  "services.py": {
+    "type": "file",
+    "size_kb": 0.99,
+    "lines": 30,
+    "description": "Environment services menu (docker compose up/down/restart)"
+  },
+  "exploration.py": {
+    "type": "file",
+    "size_kb": 5.08,
+    "lines": 161,
+    "description": "Exploration menu (file structure tree)"
+  }
+}

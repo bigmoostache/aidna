@@ -1,0 +1,8 @@
+{
+  "services": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Docker compose services (postgres, etc.)"
+  }
+}
