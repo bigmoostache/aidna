@@ -1,12 +1,19 @@
+import json
 import os
 import re
-import json
-from cli.core import PROJECT_ROOT
+
 from cli.config import (
-    MAX_FILE_LINES, MAX_FOLDER_FILES, MAX_FOLDER_DEPTH, CODE_EXTENSIONS,
-    IGNORE_FOLDERS, IGNORE_FILES, IGNORE_EXTENSIONS, SECRET_PATTERNS,
-    SECRET_SCAN_IGNORE
+    CODE_EXTENSIONS,
+    IGNORE_EXTENSIONS,
+    IGNORE_FILES,
+    IGNORE_FOLDERS,
+    MAX_FILE_LINES,
+    MAX_FOLDER_DEPTH,
+    MAX_FOLDER_FILES,
+    SECRET_PATTERNS,
+    SECRET_SCAN_IGNORE,
 )
+from cli.core import PROJECT_ROOT
 
 
 def should_ignore(name, is_dir=False):

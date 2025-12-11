@@ -1,9 +1,9 @@
 import asyncio
-import os
 import logging
+import os
 
-import env_client
 import body_client
+import env_client
 import solver
 
 logging.basicConfig(

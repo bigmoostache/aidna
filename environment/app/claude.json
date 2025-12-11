@@ -14,7 +14,7 @@
   "schemas.py": {
     "type": "file",
     "size_kb": 0.62,
-    "lines": 40,
+    "lines": 41,
     "description": "Pydantic schemas for task API requests and responses"
   },
   "Dockerfile": {
@@ -26,13 +26,13 @@
   "task_service.py": {
     "type": "file",
     "size_kb": 2.04,
-    "lines": 71,
+    "lines": 72,
     "description": "Seedable task generation and submission business logic"
   },
   "db.py": {
     "type": "file",
     "size_kb": 1.54,
-    "lines": 42,
+    "lines": 43,
     "description": "SQLAlchemy async database setup and Task model"
   }
 }

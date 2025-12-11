@@ -1,4 +1,5 @@
 import os
+
 import httpx
 
 BODY_URL = os.getenv("BODY_URL", "http://aidna-body:8000")

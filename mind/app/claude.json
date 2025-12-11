@@ -3,7 +3,7 @@
     "type": "file",
     "description": "HTTP client for Environment task API",
     "size_kb": 0.98,
-    "lines": 40
+    "lines": 41
   },
   "requirements.txt": {
     "type": "file",
@@ -33,6 +33,6 @@
     "type": "file",
     "description": "HTTP client for Body memory API",
     "size_kb": 1.26,
-    "lines": 43
+    "lines": 44
   }
 }

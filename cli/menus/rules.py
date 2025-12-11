@@ -1,17 +1,29 @@
-from cli.core import select_menu, show_output, run_command, PROJECT_ROOT
 from cli.config import (
-    MAX_FILE_LINES, MAX_FOLDER_FILES, MAX_FOLDER_DEPTH, MAX_CYCLOMATIC_COMPLEXITY
+    IGNORE_FOLDERS,
+    MAX_CYCLOMATIC_COMPLEXITY,
+    MAX_FILE_LINES,
+    MAX_FOLDER_DEPTH,
+    MAX_FOLDER_FILES,
 )
+from cli.core import PROJECT_ROOT, run_command, select_menu, show_output
 from cli.rules import (
-    check_file_lengths, check_folder_counts,
-    update_all_claude_json, check_missing_claude_json, check_missing_descriptions,
-    check_spaces_in_filenames, check_folder_depth, check_hardcoded_secrets
+    check_file_lengths,
+    check_folder_counts,
+    check_folder_depth,
+    check_hardcoded_secrets,
+    check_missing_claude_json,
+    check_missing_descriptions,
+    check_spaces_in_filenames,
+    update_all_claude_json,
 )
 from cli.rules_external import (
-    check_cyclomatic_complexity, check_ruff_linting, check_bandit_security,
-    get_tool_status, EXTERNAL_TOOLS, is_tool_installed
+    EXTERNAL_TOOLS,
+    check_bandit_security,
+    check_cyclomatic_complexity,
+    check_ruff_linting,
+    get_tool_status,
+    is_tool_installed,
 )
-from cli.config import IGNORE_FOLDERS
 
 
 def rules_menu(menu_stack, initial_selected=0):

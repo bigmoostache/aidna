@@ -1,17 +1,17 @@
 from uuid import UUID
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
 
+import task_service
 from db import get_db
+from fastapi import Depends, FastAPI, HTTPException
 from schemas import (
     GenerateTasksRequest,
     GenerateTasksResponse,
-    TaskResponse,
     SubmitAnswerRequest,
     SubmitAnswerResponse,
+    TaskResponse,
     TaskStatsResponse,
 )
-import task_service
+from sqlalchemy.ext.asyncio import AsyncSession
 
 app = FastAPI(title="AIDNA Environment")
 

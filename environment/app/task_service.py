@@ -1,9 +1,10 @@
 import random
 from datetime import datetime
 from uuid import UUID
-from sqlalchemy import select, func
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from db import Task
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def generate_tasks(db: AsyncSession, seed: int, count: int) -> int:

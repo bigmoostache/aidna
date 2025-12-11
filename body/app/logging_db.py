@@ -1,7 +1,6 @@
 import sqlite3
-import json
-from datetime import datetime
 from contextlib import contextmanager
+from datetime import datetime
 
 DB_PATH = "/app/logs.db"
 
@@ -91,7 +90,6 @@ def get_run_report(run_id: str) -> dict:
         ).fetchall()
 
         memory_ops = {"reads": 0, "writes": 0, "deletes": 0}
-        tasks_submitted = 0
 
         for log in logs:
             path = log["path"]

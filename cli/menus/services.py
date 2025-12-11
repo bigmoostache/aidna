@@ -1,5 +1,6 @@
 import os
-from cli.core import PROJECT_ROOT, select_menu, run_command
+
+from cli.core import PROJECT_ROOT, run_command, select_menu
 
 SERVICES_DIR = os.path.join(PROJECT_ROOT, "environment", "services")
 BODY_DIR = os.path.join(PROJECT_ROOT, "body")

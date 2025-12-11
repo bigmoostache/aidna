@@ -1,7 +1,7 @@
 {
   "settings.local.json": {
     "type": "file",
-    "size_kb": 0.84,
+    "size_kb": 0.26,
     "lines": 15,
     "description": "Claude Code local project settings"
   }

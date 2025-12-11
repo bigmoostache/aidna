@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-import os
-import sys
-import subprocess
-import tty
-import termios
 import json
+import os
 import shutil
+import subprocess
+import sys
+import termios
+import tty
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATE_FILE = os.path.join(PROJECT_ROOT, "cli", ".state.json")

@@ -1,7 +1,8 @@
-import os
 import json
-from cli.core import PROJECT_ROOT, select_menu, show_output, input_str, input_int
-from cli.config import IGNORE_FOLDERS, IGNORE_FILES
+import os
+
+from cli.config import IGNORE_FILES, IGNORE_FOLDERS
+from cli.core import PROJECT_ROOT, input_int, input_str, select_menu, show_output
 
 # Exploration state
 _current_path = PROJECT_ROOT

@@ -1,6 +1,7 @@
 import os
-import httpx
 from uuid import UUID
+
+import httpx
 from pydantic import BaseModel
 
 ENVIRONMENT_URL = os.getenv("ENVIRONMENT_URL", "http://aidna-api:8000")

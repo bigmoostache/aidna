@@ -1,22 +1,32 @@
 """External tool rule checks (radon, ruff, bandit)."""
-import os
 import json
-import subprocess
+import os
 import shutil
-from cli.core import PROJECT_ROOT
-from cli.config import MAX_CYCLOMATIC_COMPLEXITY, IGNORE_FOLDERS
+import subprocess
 
+from cli.config import IGNORE_FOLDERS, MAX_CYCLOMATIC_COMPLEXITY
+from cli.core import PROJECT_ROOT
 
 EXTERNAL_TOOLS = {
-    'radon': 'pip install radon',
-    'ruff': 'pip install ruff',
-    'bandit': 'pip install bandit',
+    'radon': 'uv sync --extra dev',
+    'ruff': 'uv sync --extra dev',
+    'bandit': 'uv sync --extra dev',
 }
+
+VENV_BIN = os.path.join(PROJECT_ROOT, '.venv', 'bin')
+
+
+def get_tool_path(tool_name):
+    """Get the path to a tool, checking venv first."""
+    venv_path = os.path.join(VENV_BIN, tool_name)
+    if os.path.isfile(venv_path) and os.access(venv_path, os.X_OK):
+        return venv_path
+    return shutil.which(tool_name)
 
 
 def is_tool_installed(tool_name):
     """Check if an external tool is installed."""
-    return shutil.which(tool_name) is not None
+    return get_tool_path(tool_name) is not None
 
 
 def get_tool_status():
@@ -44,11 +54,12 @@ def run_json_command(cmd):
 
 def check_cyclomatic_complexity():
     """Check cyclomatic complexity using radon."""
-    if not is_tool_installed('radon'):
+    tool_path = get_tool_path('radon')
+    if tool_path is None:
         return None
 
     exclude_args = ','.join(IGNORE_FOLDERS)
-    cmd = f'radon cc --json --exclude "{exclude_args}" .'
+    cmd = f'{tool_path} cc --json --exclude "{exclude_args}" .'
     data = run_json_command(cmd)
 
     if data is None:
@@ -70,11 +81,12 @@ def check_cyclomatic_complexity():
 
 def check_ruff_linting():
     """Check linting issues using ruff."""
-    if not is_tool_installed('ruff'):
+    tool_path = get_tool_path('ruff')
+    if tool_path is None:
         return None
 
     exclude_args = ' '.join(f'--exclude {f}' for f in IGNORE_FOLDERS)
-    cmd = f'ruff check --output-format json {exclude_args} .'
+    cmd = f'{tool_path} check --output-format json {exclude_args} .'
     data = run_json_command(cmd)
 
     if data is None:
@@ -95,11 +107,12 @@ def check_ruff_linting():
 
 def check_bandit_security():
     """Check security issues using bandit."""
-    if not is_tool_installed('bandit'):
+    tool_path = get_tool_path('bandit')
+    if tool_path is None:
         return None
 
     exclude_args = ','.join(IGNORE_FOLDERS)
-    cmd = f'bandit -r . -f json --exclude {exclude_args}'
+    cmd = f'{tool_path} -r . -f json --exclude {exclude_args}'
     data = run_json_command(cmd)
 
     if data is None:

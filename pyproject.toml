@@ -1,0 +1,24 @@
+[project]
+name = "aidna"
+version = "0.1.0"
+description = "Mind-Body-Environment AI architecture"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "radon>=6.0.1",
+    "ruff>=0.8.0",
+    "bandit>=1.8.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.bandit]
+exclude_dirs = ["__pycache__", ".venv", "venv"]

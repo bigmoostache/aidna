@@ -11,6 +11,12 @@
     "lines": null,
     "description": "Claude Code local settings"
   },
+  "pyproject.toml": {
+    "type": "file",
+    "size_kb": 0.42,
+    "lines": null,
+    "description": "Python project config with dev dependencies (radon, ruff, bandit)"
+  },
   "cli.sh": {
     "type": "file",
     "size_kb": 0.46,

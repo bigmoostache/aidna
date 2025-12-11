@@ -7,14 +7,14 @@
   },
   "main.py": {
     "type": "file",
-    "size_kb": 3.46,
-    "lines": 118,
+    "size_kb": 3.49,
+    "lines": 126,
     "description": "CLI entry point and main menu routing"
   },
   "config.py": {
     "type": "file",
-    "size_kb": 1.44,
-    "lines": 72,
+    "size_kb": 1.46,
+    "lines": 73,
     "description": "Configuration constants for project rules and code extensions"
   },
   "core.py": {
@@ -25,14 +25,14 @@
   },
   "rules.py": {
     "type": "file",
-    "size_kb": 7.86,
-    "lines": 271,
+    "size_kb": 7.89,
+    "lines": 278,
     "description": "Project rules checking logic (file lengths, folder counts, claude.json)"
   },
   "rules_external.py": {
     "type": "file",
-    "size_kb": 3.48,
-    "lines": 120,
+    "size_kb": 3.89,
+    "lines": 133,
     "description": "External tool checks (radon, ruff, bandit) with graceful degradation"
   },
   "CLAUDE.md": {

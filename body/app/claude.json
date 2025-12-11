@@ -32,7 +32,7 @@
   "logging_db.py": {
     "type": "file",
     "description": "SQLite database for logging all requests and generating run reports",
-    "size_kb": 3.63,
-    "lines": 130
+    "size_kb": 3.59,
+    "lines": 128
   }
 }

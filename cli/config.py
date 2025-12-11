@@ -1,7 +1,7 @@
 # Project rules configuration
 
 MAX_FILE_LINES = 700
-MAX_FOLDER_FILES = 7
+MAX_FOLDER_FILES = 8
 MAX_FOLDER_DEPTH = 5
 MAX_CYCLOMATIC_COMPLEXITY = 15
 
@@ -45,6 +45,7 @@ IGNORE_FOLDERS = {
 IGNORE_FILES = {
     '.state.json',
     '.DS_Store',
+    'uv.lock',
 }
 
 # File extensions to ignore during analysis

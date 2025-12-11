@@ -1,11 +1,11 @@
 import time
 import uuid
-from fastapi import FastAPI, HTTPException, Request, Response
-from starlette.middleware.base import BaseHTTPMiddleware
 
-from memory import memory
-from schemas import MemoryValue, RunResponse, RunReport, RunListResponse
 import logging_db
+from fastapi import FastAPI, HTTPException, Request, Response
+from memory import memory
+from schemas import MemoryValue, RunListResponse, RunReport, RunResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
 app = FastAPI(title="AIDNA Body")
 

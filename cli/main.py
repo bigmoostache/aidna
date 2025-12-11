@@ -6,12 +6,20 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cli.core import (
-    STATE_FILE, RestartRequested, GoToRoot,
-    save_state, load_state, select_menu, clear_screen
+    STATE_FILE,
+    GoToRoot,
+    RestartRequested,
+    clear_screen,
+    load_state,
+    save_state,
+    select_menu,
 )
 from cli.menus import (
-    services_menu, exploration_menu, rules_menu,
-    claude_md_menu, individual_checks_menu
+    claude_md_menu,
+    exploration_menu,
+    individual_checks_menu,
+    rules_menu,
+    services_menu,
 )
 
 
