@@ -13,8 +13,8 @@
   },
   "config.py": {
     "type": "file",
-    "size_kb": 1.33,
-    "lines": 65,
+    "size_kb": 1.44,
+    "lines": 72,
     "description": "Configuration constants for project rules and code extensions"
   },
   "core.py": {
@@ -25,8 +25,8 @@
   },
   "rules.py": {
     "type": "file",
-    "size_kb": 7.75,
-    "lines": 267,
+    "size_kb": 7.86,
+    "lines": 271,
     "description": "Project rules checking logic (file lengths, folder counts, claude.json)"
   },
   "rules_external.py": {

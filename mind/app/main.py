@@ -82,7 +82,18 @@ async def main_loop():
 async def main():
     logger.info("Mind starting up...")
     await wait_for_services()
-    await main_loop()
+
+    # Start a new run
+    run_id = await body_client.start_run()
+    logger.info(f"Started run: {run_id}")
+
+    try:
+        await main_loop()
+    except KeyboardInterrupt:
+        logger.info("Interrupted, ending run...")
+    finally:
+        await body_client.end_run()
+        logger.info(f"Ended run: {run_id}")
 
 
 if __name__ == "__main__":

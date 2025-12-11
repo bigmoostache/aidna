@@ -1,8 +1,14 @@
 {
+  "app": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Body service FastAPI application code"
+  },
   "docker-compose.yml": {
     "type": "file",
-    "size_kb": 0.0,
-    "lines": 0,
+    "size_kb": 0.45,
+    "lines": 21,
     "description": "Docker compose for AI agent runtime services"
   }
 }

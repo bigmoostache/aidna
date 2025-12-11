@@ -27,3 +27,17 @@ async def get_all_memory() -> dict[str, str]:
         response = await client.get(f"{BODY_URL}/memory")
         response.raise_for_status()
         return response.json()
+
+
+async def start_run() -> str:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(f"{BODY_URL}/runs/start")
+        response.raise_for_status()
+        return response.json()["run_id"]
+
+
+async def end_run() -> str:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(f"{BODY_URL}/runs/end")
+        response.raise_for_status()
+        return response.json()["run_id"]

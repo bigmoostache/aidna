@@ -1,26 +1,38 @@
 {
-  "Dockerfile": {
-    "type": "file",
-    "description": "Docker build configuration for Mind service"
-  },
-  "body_client.py": {
-    "type": "file",
-    "description": "HTTP client for Body memory API"
-  },
   "env_client.py": {
     "type": "file",
-    "description": "HTTP client for Environment task API"
-  },
-  "main.py": {
-    "type": "file",
-    "description": "Main loop that fetches and solves tasks"
+    "description": "HTTP client for Environment task API",
+    "size_kb": 0.98,
+    "lines": 40
   },
   "requirements.txt": {
     "type": "file",
-    "description": "Python dependencies for Mind service"
+    "description": "Python dependencies for Mind service",
+    "size_kb": 0.01,
+    "lines": null
+  },
+  "main.py": {
+    "type": "file",
+    "description": "Main loop that fetches and solves tasks",
+    "size_kb": 2.97,
+    "lines": 100
   },
   "solver.py": {
     "type": "file",
-    "description": "Hard-coded arithmetic task solver"
+    "description": "Hard-coded arithmetic task solver",
+    "size_kb": 0.43,
+    "lines": 14
+  },
+  "Dockerfile": {
+    "type": "file",
+    "description": "Docker build configuration for Mind service",
+    "size_kb": 0.19,
+    "lines": null
+  },
+  "body_client.py": {
+    "type": "file",
+    "description": "HTTP client for Body memory API",
+    "size_kb": 1.26,
+    "lines": 43
   }
 }

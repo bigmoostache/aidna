@@ -1,22 +1,38 @@
 {
-  "Dockerfile": {
+  "requirements.txt": {
     "type": "file",
-    "description": "Docker build configuration for Body service"
+    "description": "Python dependencies for Body service",
+    "size_kb": 0.03,
+    "lines": null
   },
   "main.py": {
     "type": "file",
-    "description": "FastAPI app with memory REST endpoints"
-  },
-  "memory.py": {
-    "type": "file",
-    "description": "Simple dict-based memory store for Mind state"
-  },
-  "requirements.txt": {
-    "type": "file",
-    "description": "Python dependencies for Body service"
+    "description": "FastAPI app with memory endpoints, logging middleware, and run reports",
+    "size_kb": 4.08,
+    "lines": 155
   },
   "schemas.py": {
     "type": "file",
-    "description": "Pydantic schemas for memory API"
+    "description": "Pydantic schemas for memory and run report APIs",
+    "size_kb": 0.8,
+    "lines": 52
+  },
+  "Dockerfile": {
+    "type": "file",
+    "description": "Docker build configuration for Body service",
+    "size_kb": 0.25,
+    "lines": null
+  },
+  "memory.py": {
+    "type": "file",
+    "description": "Simple dict-based memory store for Mind state",
+    "size_kb": 0.53,
+    "lines": 24
+  },
+  "logging_db.py": {
+    "type": "file",
+    "description": "SQLite database for logging all requests and generating run reports",
+    "size_kb": 3.63,
+    "lines": 130
   }
 }

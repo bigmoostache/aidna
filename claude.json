@@ -31,7 +31,7 @@
   },
   ".gitignore": {
     "type": "file",
-    "size_kb": 0.34,
+    "size_kb": 0.37,
     "lines": null,
     "description": "Git configuration to exclude files and directories from version control"
   },
@@ -43,14 +43,14 @@
   },
   "aidna": {
     "type": "file",
-    "size_kb": 0.87,
+    "size_kb": 0.93,
     "lines": null,
     "description": "Helper script to interact with the CLI control session"
   },
   "CLAUDE.md": {
     "type": "file",
-    "size_kb": 1.84,
-    "lines": 54,
+    "size_kb": 5.17,
+    "lines": 155,
     "description": "CLI usage guide (navigation, menus, commands)"
   },
   ".env": {

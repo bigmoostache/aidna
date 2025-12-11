@@ -4,7 +4,8 @@ import json
 from cli.core import PROJECT_ROOT
 from cli.config import (
     MAX_FILE_LINES, MAX_FOLDER_FILES, MAX_FOLDER_DEPTH, CODE_EXTENSIONS,
-    IGNORE_FOLDERS, IGNORE_FILES, SECRET_PATTERNS, SECRET_SCAN_IGNORE
+    IGNORE_FOLDERS, IGNORE_FILES, IGNORE_EXTENSIONS, SECRET_PATTERNS,
+    SECRET_SCAN_IGNORE
 )
 
 
@@ -12,7 +13,10 @@ def should_ignore(name, is_dir=False):
     """Check if a file/folder should be ignored."""
     if is_dir:
         return name in IGNORE_FOLDERS
-    return name in IGNORE_FILES
+    if name in IGNORE_FILES:
+        return True
+    _, ext = os.path.splitext(name)
+    return ext.lower() in IGNORE_EXTENSIONS
 
 
 def count_lines(filepath):

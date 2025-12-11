@@ -7,8 +7,8 @@
   },
   "services.py": {
     "type": "file",
-    "size_kb": 3.31,
-    "lines": 100,
+    "size_kb": 5.72,
+    "lines": 177,
     "description": "Environment services menu (docker compose up/down/restart)"
   },
   "__init__.py": {

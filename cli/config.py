@@ -47,6 +47,13 @@ IGNORE_FILES = {
     '.DS_Store',
 }
 
+# File extensions to ignore during analysis
+IGNORE_EXTENSIONS = {
+    '.db',
+    '.sqlite',
+    '.sqlite3',
+}
+
 # Secret detection patterns (regex, description)
 SECRET_PATTERNS = [
     (r'(?i)password\s*=\s*["\'][^"\']+["\']', 'Hardcoded password'),
