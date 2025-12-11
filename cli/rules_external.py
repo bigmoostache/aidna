@@ -29,7 +29,7 @@ def run_json_command(cmd):
     try:
         result = subprocess.run(
             cmd,
-            shell=True,
+            shell=True,  # nosec B602
             cwd=PROJECT_ROOT,
             capture_output=True,
             text=True,

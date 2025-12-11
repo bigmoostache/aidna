@@ -220,62 +220,66 @@ def _check_missing_descriptions():
     show_output("Missing Descriptions Check", lines)
 
 
+def _format_check_result(violations, fail_msg, ok_msg, formatter=None, limit=5):
+    """Format a check result. Returns list of lines."""
+    if not violations:
+        return [f"\033[32m✓ {ok_msg}\033[0m"]
+    lines = [f"\033[31m{fail_msg}\033[0m"]
+    for v in violations[:limit]:
+        lines.append(f"  {formatter(v) if formatter else v}")
+    if len(violations) > limit:
+        lines.append(f"  ... and {len(violations) - limit} more")
+    lines.append("")
+    return lines
+
+
+def _format_external_check(violations, skip_msg, fail_msg, ok_msg, formatter=None):
+    """Format an external tool check result."""
+    if violations is None:
+        return [f"\033[33m⚠ {skip_msg}\033[0m"]
+    if violations:
+        lines = [f"\033[31m{fail_msg}\033[0m"]
+        if formatter:
+            for v in violations[:3]:
+                lines.append(f"  {formatter(v)}")
+            lines.append("")
+        return lines
+    return [f"\033[32m✓ {ok_msg}\033[0m"]
+
+
 def _check_all_rules():
     lines = []
 
-    # File lengths
-    file_violations = check_file_lengths()
-    if file_violations:
-        lines.append(f"\033[31mFiles exceeding {MAX_FILE_LINES} lines:\033[0m")
-        for path, count in file_violations:
-            lines.append(f"  {path}: {count} lines")
-        lines.append("")
-    else:
-        lines.append(f"\033[32m✓ All files under {MAX_FILE_LINES} lines\033[0m")
+    lines += _format_check_result(
+        check_file_lengths(),
+        f"Files exceeding {MAX_FILE_LINES} lines:",
+        f"All files under {MAX_FILE_LINES} lines",
+        lambda v: f"{v[0]}: {v[1]} lines")
 
-    # Folder counts
-    folder_violations = check_folder_counts()
-    if folder_violations:
-        lines.append(f"\033[31mFolders exceeding {MAX_FOLDER_FILES} files:\033[0m")
-        for path, count in folder_violations:
-            lines.append(f"  {path}: {count} files")
-        lines.append("")
-    else:
-        lines.append(f"\033[32m✓ All folders have {MAX_FOLDER_FILES} or fewer files\033[0m")
+    lines += _format_check_result(
+        check_folder_counts(),
+        f"Folders exceeding {MAX_FOLDER_FILES} files:",
+        f"All folders have {MAX_FOLDER_FILES} or fewer files",
+        lambda v: f"{v[0]}: {v[1]} files")
 
-    # Spaces in filenames
-    spaces_violations = check_spaces_in_filenames()
-    if spaces_violations:
-        lines.append(f"\033[31mFiles/folders with spaces ({len(spaces_violations)}):\033[0m")
-        for path, item_type in spaces_violations[:5]:
-            lines.append(f"  {path}")
-        if len(spaces_violations) > 5:
-            lines.append(f"  ... and {len(spaces_violations) - 5} more")
-        lines.append("")
-    else:
-        lines.append("\033[32m✓ No spaces in filenames\033[0m")
+    lines += _format_check_result(
+        check_spaces_in_filenames(),
+        f"Files/folders with spaces ({len(check_spaces_in_filenames())}):",
+        "No spaces in filenames",
+        lambda v: v[0])
 
-    # Folder depth
-    depth_violations = check_folder_depth()
-    if depth_violations:
-        lines.append(f"\033[31mFolders too deep ({len(depth_violations)}):\033[0m")
-        for path, depth in depth_violations[:5]:
-            lines.append(f"  {path}: depth {depth}")
-        lines.append("")
-    else:
-        lines.append("\033[32m✓ All folders within depth limit\033[0m")
+    lines += _format_check_result(
+        check_folder_depth(),
+        f"Folders too deep ({len(check_folder_depth())}):",
+        "All folders within depth limit",
+        lambda v: f"{v[0]}: depth {v[1]}")
 
-    # Hardcoded secrets
-    secret_violations = check_hardcoded_secrets()
-    if secret_violations:
-        lines.append(f"\033[31mPotential secrets ({len(secret_violations)}):\033[0m")
-        for path, line_num, desc in secret_violations[:5]:
-            lines.append(f"  {path}:{line_num}")
-        lines.append("")
-    else:
-        lines.append("\033[32m✓ No hardcoded secrets detected\033[0m")
+    lines += _format_check_result(
+        check_hardcoded_secrets(),
+        f"Potential secrets ({len(check_hardcoded_secrets())}):",
+        "No hardcoded secrets detected",
+        lambda v: f"{v[0]}:{v[1]}")
 
-    # Missing claude.json
     missing = check_missing_claude_json()
     if missing:
         lines.append("\033[33mFolders missing claude.json:\033[0m")
@@ -285,7 +289,6 @@ def _check_all_rules():
     else:
         lines.append("\033[32m✓ All folders have claude.json\033[0m")
 
-    # Missing descriptions
     missing_desc = check_missing_descriptions()
     if missing_desc:
         lines.append("\033[33mMissing descriptions in claude.json:\033[0m")
@@ -295,33 +298,24 @@ def _check_all_rules():
     else:
         lines.append("\033[32m✓ All entries have descriptions\033[0m")
 
-    # External tool checks (graceful degradation)
-    cc_violations = check_cyclomatic_complexity()
-    if cc_violations is None:
-        lines.append("\033[33m⚠ Complexity check skipped (radon not installed)\033[0m")
-    elif cc_violations:
-        lines.append(f"\033[31mHigh complexity functions ({len(cc_violations)}):\033[0m")
-        for path, func, line, cc, rank in cc_violations[:3]:
-            lines.append(f"  {path}:{line} {func}() CC={cc}")
-        lines.append("")
-    else:
-        lines.append("\033[32m✓ All functions have acceptable complexity\033[0m")
+    lines += _format_external_check(
+        check_cyclomatic_complexity(),
+        "Complexity check skipped (radon not installed)",
+        f"High complexity functions ({len(check_cyclomatic_complexity() or [])}):",
+        "All functions have acceptable complexity",
+        lambda v: f"{v[0]}:{v[2]} {v[1]}() CC={v[3]}")
 
-    ruff_violations = check_ruff_linting()
-    if ruff_violations is None:
-        lines.append("\033[33m⚠ Linting check skipped (ruff not installed)\033[0m")
-    elif ruff_violations:
-        lines.append(f"\033[31mLinting issues ({len(ruff_violations)})\033[0m")
-    else:
-        lines.append("\033[32m✓ No linting issues\033[0m")
+    lines += _format_external_check(
+        check_ruff_linting(),
+        "Linting check skipped (ruff not installed)",
+        f"Linting issues ({len(check_ruff_linting() or [])})",
+        "No linting issues")
 
-    bandit_violations = check_bandit_security()
-    if bandit_violations is None:
-        lines.append("\033[33m⚠ Security check skipped (bandit not installed)\033[0m")
-    elif bandit_violations:
-        lines.append(f"\033[31mSecurity issues ({len(bandit_violations)})\033[0m")
-    else:
-        lines.append("\033[32m✓ No security issues\033[0m")
+    lines += _format_external_check(
+        check_bandit_security(),
+        "Security check skipped (bandit not installed)",
+        f"Security issues ({len(check_bandit_security() or [])})",
+        "No security issues")
 
     show_output("All Rules Check", lines)
 

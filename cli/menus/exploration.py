@@ -20,61 +20,56 @@ def load_claude_json(folder_path):
     return {}
 
 
-def build_tree(path, prefix="", is_last=True, is_root=True, current_depth=0, max_depth=None):
-    """Build tree with descriptions from claude.json."""
-    lines = []
+def _get_tree_header(path, is_root, is_last, prefix):
+    """Get the header line for a tree node."""
     name = os.path.basename(path) or "."
-
     if is_root:
         rel_path = os.path.relpath(path, PROJECT_ROOT)
-        if rel_path == '.':
-            lines.append(".")
-        else:
-            lines.append(f"./{rel_path}")
-    else:
-        connector = "└── " if is_last else "├── "
-        parent_path = os.path.dirname(path)
-        parent_claude = load_claude_json(parent_path)
-        desc = parent_claude.get(name, {}).get('description', '')
+        return "." if rel_path == '.' else f"./{rel_path}"
 
-        if desc:
-            lines.append(f"{prefix}{connector}{name}  \033[90m# {desc}\033[0m")
-        else:
-            lines.append(f"{prefix}{connector}{name}")
+    connector = "└── " if is_last else "├── "
+    parent_claude = load_claude_json(os.path.dirname(path))
+    desc = parent_claude.get(name, {}).get('description', '')
+    if desc:
+        return f"{prefix}{connector}{name}  \033[90m# {desc}\033[0m"
+    return f"{prefix}{connector}{name}"
 
-    if os.path.isdir(path):
-        if max_depth is not None and current_depth >= max_depth:
-            try:
-                items = os.listdir(path)
-                sub_count = len([i for i in items if i not in IGNORE_FOLDERS and i not in IGNORE_FILES and i != 'claude.json'])
-                if sub_count > 0 and not is_root:
-                    new_prefix = prefix + ("    " if is_last else "│   ")
-                    lines.append(f"{new_prefix}\033[90m... ({sub_count} items)\033[0m")
-            except Exception:
-                pass
-            return lines
 
-        try:
-            items = os.listdir(path)
-        except Exception:
-            return lines
+def _get_filtered_items(path):
+    """Get sorted dirs and files, filtering ignored items."""
+    try:
+        items = os.listdir(path)
+    except Exception:
+        return [], []
+    dirs = sorted([i for i in items if os.path.isdir(os.path.join(path, i))
+                   and i not in IGNORE_FOLDERS and i != 'claude.json'])
+    files = sorted([i for i in items if os.path.isfile(os.path.join(path, i))
+                    and i not in IGNORE_FILES and i != 'claude.json'])
+    return dirs, files
 
-        dirs = sorted([i for i in items if os.path.isdir(os.path.join(path, i)) and i not in IGNORE_FOLDERS and i != 'claude.json'])
-        files = sorted([i for i in items if os.path.isfile(os.path.join(path, i)) and i not in IGNORE_FILES and i != 'claude.json'])
 
-        all_items = dirs + files
+def build_tree(path, prefix="", is_last=True, is_root=True, current_depth=0, max_depth=None):
+    """Build tree with descriptions from claude.json."""
+    lines = [_get_tree_header(path, is_root, is_last, prefix)]
 
-        for i, item in enumerate(all_items):
-            item_path = os.path.join(path, item)
-            is_last_item = (i == len(all_items) - 1)
+    if not os.path.isdir(path):
+        return lines
 
-            if is_root:
-                new_prefix = ""
-            else:
-                new_prefix = prefix + ("    " if is_last else "│   ")
+    dirs, files = _get_filtered_items(path)
+    all_items = dirs + files
 
-            lines.extend(build_tree(item_path, new_prefix, is_last_item, is_root=False,
-                                   current_depth=current_depth + 1, max_depth=max_depth))
+    if max_depth is not None and current_depth >= max_depth:
+        if all_items and not is_root:
+            new_prefix = prefix + ("    " if is_last else "│   ")
+            lines.append(f"{new_prefix}\033[90m... ({len(all_items)} items)\033[0m")
+        return lines
+
+    for i, item in enumerate(all_items):
+        item_path = os.path.join(path, item)
+        is_last_item = (i == len(all_items) - 1)
+        new_prefix = "" if is_root else prefix + ("    " if is_last else "│   ")
+        lines.extend(build_tree(item_path, new_prefix, is_last_item, is_root=False,
+                                current_depth=current_depth + 1, max_depth=max_depth))
 
     return lines
 

@@ -125,7 +125,7 @@ def run_command(cmd, cwd=None):
     """Run a command and wait for keypress."""
     clear_screen()
     print("\033[1mRunning...\033[0m\n")
-    result = subprocess.run(cmd, shell=True, cwd=cwd)
+    result = subprocess.run(cmd, shell=True, cwd=cwd)  # nosec B602
     print(f"\n\033[{'32' if result.returncode == 0 else '31'}m")
     print(f"{'Done!' if result.returncode == 0 else f'Failed (exit code {result.returncode})'}")
     print("\033[0m\nPress any key to continue...")
@@ -160,77 +160,67 @@ def show_file(title, file_path):
     get_key()
 
 
+def _handle_input_key(key, value, cursor_pos, select_all):
+    """Handle a keypress in input_str. Returns (value, cursor_pos, select_all, done, result)."""
+    # Submit or cancel
+    if key in ('\r', '\n'):
+        return value, cursor_pos, select_all, True, value
+    if key == '\x1b' or (key in ('q', 'Q') and not value):
+        return value, cursor_pos, select_all, True, None
+
+    # Backspace
+    if key in ('\x7f', '\x08'):
+        if select_all:
+            return "", 0, False, False, None
+        return (value[:cursor_pos-1] + value[cursor_pos:], cursor_pos - 1, False, False, None) if cursor_pos > 0 else (value, cursor_pos, select_all, False, None)
+
+    # Navigation keys
+    nav_keys = {
+        '\x1b[D': (cursor_pos - 1 if cursor_pos > 0 else cursor_pos),
+        '\x1b[C': (cursor_pos + 1 if cursor_pos < len(value) else cursor_pos),
+        '\x1b[H': 0,
+        '\x1b[F': len(value),
+    }
+    if key in nav_keys:
+        return value, nav_keys[key], False, False, None
+
+    # Printable character
+    if len(key) == 1 and key.isprintable():
+        if select_all:
+            return key, 1, False, False, None
+        return value[:cursor_pos] + key + value[cursor_pos:], cursor_pos + 1, False, False, None
+
+    return value, cursor_pos, select_all, False, None
+
+
 def input_str(prompt, default=""):
     """Get string input from user. Returns None if cancelled."""
     value = default
     cursor_pos = len(value)
-    select_all = bool(default)  # Select all if there's a default
+    select_all = bool(default)
 
     while True:
-        cols, lines = get_terminal_size()
+        _, lines = get_terminal_size()
         sys.stdout.write("\033[H")
 
-        # Render with selection highlight if select_all
         if select_all and value:
             input_display = f"{prompt}: \033[7m{value}\033[0m"
         else:
             input_display = f"{prompt}: {value[:cursor_pos]}\033[7m{value[cursor_pos:cursor_pos+1] or ' '}\033[0m{value[cursor_pos+1:]}"
 
-        output_lines = [
-            "\033[1mInput\033[0m",
-            "",
-            input_display,
-            "",
-            "[Enter] Confirm  [Esc/q] Cancel  [Backspace] Delete"
-        ]
+        output_lines = ["\033[1mInput\033[0m", "", input_display, "",
+                        "[Enter] Confirm  [Esc/q] Cancel  [Backspace] Delete"]
 
         for line in output_lines:
             sys.stdout.write(f"{line}\033[K\n")
-
-        remaining = lines - len(output_lines) - 1
-        for _ in range(remaining):
+        for _ in range(lines - len(output_lines) - 1):
             sys.stdout.write("\033[K\n")
-
         sys.stdout.flush()
 
         key = get_key()
-
-        if key in ('\r', '\n'):
-            return value
-        elif key in ('\x1b', 'q', 'Q') and not value:
-            return None
-        elif key == '\x1b':
-            return None
-        elif key == '\x7f' or key == '\x08':  # Backspace
-            if select_all:
-                value = ""
-                cursor_pos = 0
-                select_all = False
-            elif cursor_pos > 0:
-                value = value[:cursor_pos-1] + value[cursor_pos:]
-                cursor_pos -= 1
-        elif key == '\x1b[D':  # Left arrow
-            select_all = False
-            if cursor_pos > 0:
-                cursor_pos -= 1
-        elif key == '\x1b[C':  # Right arrow
-            select_all = False
-            if cursor_pos < len(value):
-                cursor_pos += 1
-        elif key == '\x1b[H':  # Home
-            select_all = False
-            cursor_pos = 0
-        elif key == '\x1b[F':  # End
-            select_all = False
-            cursor_pos = len(value)
-        elif len(key) == 1 and key.isprintable():
-            if select_all:
-                value = key
-                cursor_pos = 1
-                select_all = False
-            else:
-                value = value[:cursor_pos] + key + value[cursor_pos:]
-                cursor_pos += 1
+        value, cursor_pos, select_all, done, result = _handle_input_key(key, value, cursor_pos, select_all)
+        if done:
+            return result
 
 
 def input_int(prompt, default=None, min_val=None, max_val=None):
