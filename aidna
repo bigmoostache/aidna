@@ -31,6 +31,7 @@ else
         tmux send-keys -t "$SESSION" "$key"
         sleep "$delay"
     done
+    sleep 1.0  # Wait for any processing to at least start
 
     # Capture with full scrollback
     tmux capture-pane -t "$SESSION" -p -S -
