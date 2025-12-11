@@ -124,7 +124,7 @@ def select_menu(title, options, initial_selected=0):
 def run_command(cmd, cwd=None):
     """Run a command and wait for keypress."""
     clear_screen()
-    print(f"\033[1mRunning...\033[0m\n")
+    print("\033[1mRunning...\033[0m\n")
     result = subprocess.run(cmd, shell=True, cwd=cwd)
     print(f"\n\033[{'32' if result.returncode == 0 else '31'}m")
     print(f"{'Done!' if result.returncode == 0 else f'Failed (exit code {result.returncode})'}")
@@ -177,7 +177,7 @@ def input_str(prompt, default=""):
             input_display = f"{prompt}: {value[:cursor_pos]}\033[7m{value[cursor_pos:cursor_pos+1] or ' '}\033[0m{value[cursor_pos+1:]}"
 
         output_lines = [
-            f"\033[1mInput\033[0m",
+            "\033[1mInput\033[0m",
             "",
             input_display,
             "",

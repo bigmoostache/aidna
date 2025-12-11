@@ -1,0 +1,14 @@
+{
+  "main.py": {
+    "type": "file",
+    "description": "FastAPI application entry point with API routes"
+  },
+  "requirements.txt": {
+    "type": "file",
+    "description": "Python dependencies for the FastAPI app"
+  },
+  "Dockerfile": {
+    "type": "file",
+    "description": "Docker image definition using uv for package management"
+  }
+}

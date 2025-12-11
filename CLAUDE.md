@@ -43,11 +43,12 @@ Use `./aidna` to interact with the project CLI:
 
 All start with `~` to work from anywhere:
 
-- `./aidna "~,c,a"`: Run all project checks
-- `./aidna "~,c,c"`: Update all claude.json files
-- `./aidna "~,c,d"`: Check external tool status
-- `./aidna "~,b,a"`: Show file structure tree
-- `./aidna "~,b,b"`: Browse CLAUDE.md files
-- `./aidna "~,a,a"`: Start docker services
-- `./aidna "~,a,b"`: Stop docker services
-- `./aidna "~,a,c"`: Restart docker services
+- `./aidna " ,~"`: Go back to CLI root
+- `./aidna " ,~,c,a"`: Run all project checks
+- `./aidna " ,~,c,c"`: Update all claude.json files
+- `./aidna " ,~,c,d"`: Check external tool status
+- `./aidna " ,~,b,a"`: Show file structure tree
+- `./aidna " ,~,b,b"`: Browse CLAUDE.md files
+- `./aidna " ,~,a,a"`: Start docker services
+- `./aidna " ,~,a,b"`: Stop docker services
+- `./aidna " ,~,a,c"`: Restart docker services

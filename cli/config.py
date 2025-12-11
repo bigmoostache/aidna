@@ -38,6 +38,7 @@ IGNORE_FOLDERS = {
     'venv',
     '.idea',
     '.vscode',
+    '.ruff_cache',
 }
 
 # Files to ignore during analysis

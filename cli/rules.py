@@ -20,7 +20,7 @@ def count_lines(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
             return sum(1 for _ in f)
-    except:
+    except Exception:
         return 0
 
 
@@ -28,7 +28,7 @@ def get_file_size_kb(filepath):
     """Get file size in KB."""
     try:
         return round(os.path.getsize(filepath) / 1024, 2)
-    except:
+    except Exception:
         return 0
 
 
@@ -81,7 +81,7 @@ def update_claude_json(folder_path):
         try:
             with open(claude_file, 'r') as f:
                 existing = json.load(f)
-        except:
+        except Exception:
             existing = {}
 
     # Get current files and folders
@@ -90,7 +90,7 @@ def update_claude_json(folder_path):
 
     try:
         items = os.listdir(folder_path)
-    except:
+    except Exception:
         return [], ["Cannot read folder"]
 
     for item in items:
@@ -184,7 +184,7 @@ def check_missing_descriptions():
         try:
             with open(claude_file, 'r') as f:
                 data = json.load(f)
-        except:
+        except Exception:
             continue
 
         rel_path = os.path.relpath(root, PROJECT_ROOT)
@@ -261,7 +261,7 @@ def check_hardcoded_secrets():
                             if re.search(pattern, line):
                                 violations.append((rel_path, line_num, description))
                                 break
-            except:
+            except Exception:
                 continue
 
     return violations

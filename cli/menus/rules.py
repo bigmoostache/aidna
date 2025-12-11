@@ -1,4 +1,4 @@
-from cli.core import select_menu, show_output
+from cli.core import select_menu, show_output, run_command, PROJECT_ROOT
 from cli.config import (
     MAX_FILE_LINES, MAX_FOLDER_FILES, MAX_FOLDER_DEPTH, MAX_CYCLOMATIC_COMPLEXITY
 )
@@ -9,8 +9,9 @@ from cli.rules import (
 )
 from cli.rules_external import (
     check_cyclomatic_complexity, check_ruff_linting, check_bandit_security,
-    get_tool_status, EXTERNAL_TOOLS
+    get_tool_status, EXTERNAL_TOOLS, is_tool_installed
 )
+from cli.config import IGNORE_FOLDERS
 
 
 def rules_menu(menu_stack, initial_selected=0):
@@ -56,6 +57,8 @@ def individual_checks_menu(menu_stack, initial_selected=0):
         "Check security issues",
         "Check missing claude.json",
         "Check missing descriptions",
+        "Fix linting issues - Auto-fix with ruff",
+        "View security details - Show full bandit output",
     ]
 
     selected = initial_selected
@@ -89,6 +92,10 @@ def individual_checks_menu(menu_stack, initial_selected=0):
                 _check_missing_claude_json()
             elif choice == 9:
                 _check_missing_descriptions()
+            elif choice == 10:
+                _fix_linting_issues()
+            elif choice == 11:
+                _view_security_details()
 
 
 def _check_file_lengths():
@@ -246,7 +253,7 @@ def _check_all_rules():
             lines.append(f"  ... and {len(spaces_violations) - 5} more")
         lines.append("")
     else:
-        lines.append(f"\033[32m✓ No spaces in filenames\033[0m")
+        lines.append("\033[32m✓ No spaces in filenames\033[0m")
 
     # Folder depth
     depth_violations = check_folder_depth()
@@ -256,7 +263,7 @@ def _check_all_rules():
             lines.append(f"  {path}: depth {depth}")
         lines.append("")
     else:
-        lines.append(f"\033[32m✓ All folders within depth limit\033[0m")
+        lines.append("\033[32m✓ All folders within depth limit\033[0m")
 
     # Hardcoded secrets
     secret_violations = check_hardcoded_secrets()
@@ -266,55 +273,55 @@ def _check_all_rules():
             lines.append(f"  {path}:{line_num}")
         lines.append("")
     else:
-        lines.append(f"\033[32m✓ No hardcoded secrets detected\033[0m")
+        lines.append("\033[32m✓ No hardcoded secrets detected\033[0m")
 
     # Missing claude.json
     missing = check_missing_claude_json()
     if missing:
-        lines.append(f"\033[33mFolders missing claude.json:\033[0m")
+        lines.append("\033[33mFolders missing claude.json:\033[0m")
         for path in missing:
             lines.append(f"  {path}")
         lines.append("")
     else:
-        lines.append(f"\033[32m✓ All folders have claude.json\033[0m")
+        lines.append("\033[32m✓ All folders have claude.json\033[0m")
 
     # Missing descriptions
     missing_desc = check_missing_descriptions()
     if missing_desc:
-        lines.append(f"\033[33mMissing descriptions in claude.json:\033[0m")
+        lines.append("\033[33mMissing descriptions in claude.json:\033[0m")
         for item in missing_desc:
             lines.append(f"  {item}")
         lines.append("")
     else:
-        lines.append(f"\033[32m✓ All entries have descriptions\033[0m")
+        lines.append("\033[32m✓ All entries have descriptions\033[0m")
 
     # External tool checks (graceful degradation)
     cc_violations = check_cyclomatic_complexity()
     if cc_violations is None:
-        lines.append(f"\033[33m⚠ Complexity check skipped (radon not installed)\033[0m")
+        lines.append("\033[33m⚠ Complexity check skipped (radon not installed)\033[0m")
     elif cc_violations:
         lines.append(f"\033[31mHigh complexity functions ({len(cc_violations)}):\033[0m")
         for path, func, line, cc, rank in cc_violations[:3]:
             lines.append(f"  {path}:{line} {func}() CC={cc}")
         lines.append("")
     else:
-        lines.append(f"\033[32m✓ All functions have acceptable complexity\033[0m")
+        lines.append("\033[32m✓ All functions have acceptable complexity\033[0m")
 
     ruff_violations = check_ruff_linting()
     if ruff_violations is None:
-        lines.append(f"\033[33m⚠ Linting check skipped (ruff not installed)\033[0m")
+        lines.append("\033[33m⚠ Linting check skipped (ruff not installed)\033[0m")
     elif ruff_violations:
         lines.append(f"\033[31mLinting issues ({len(ruff_violations)})\033[0m")
     else:
-        lines.append(f"\033[32m✓ No linting issues\033[0m")
+        lines.append("\033[32m✓ No linting issues\033[0m")
 
     bandit_violations = check_bandit_security()
     if bandit_violations is None:
-        lines.append(f"\033[33m⚠ Security check skipped (bandit not installed)\033[0m")
+        lines.append("\033[33m⚠ Security check skipped (bandit not installed)\033[0m")
     elif bandit_violations:
         lines.append(f"\033[31mSecurity issues ({len(bandit_violations)})\033[0m")
     else:
-        lines.append(f"\033[32m✓ No security issues\033[0m")
+        lines.append("\033[32m✓ No security issues\033[0m")
 
     show_output("All Rules Check", lines)
 
@@ -344,3 +351,27 @@ def _show_tool_status():
             lines.append(f"  \033[31m✗ {tool}: Not installed\033[0m")
             lines.append(f"      Install with: {install_cmd}")
     show_output("External Tool Status", lines)
+
+
+def _fix_linting_issues():
+    if not is_tool_installed('ruff'):
+        show_output("Fix Linting Issues", [
+            "\033[33mRuff is not installed.\033[0m", "",
+            "Install with: pip install ruff"
+        ])
+        return
+
+    exclude_args = ' '.join(f'--exclude {f}' for f in IGNORE_FOLDERS)
+    run_command(f"ruff check --fix {exclude_args} .", cwd=PROJECT_ROOT)
+
+
+def _view_security_details():
+    if not is_tool_installed('bandit'):
+        show_output("Security Details", [
+            "\033[33mBandit is not installed.\033[0m", "",
+            "Install with: pip install bandit"
+        ])
+        return
+
+    exclude_args = ','.join(IGNORE_FOLDERS)
+    run_command(f"bandit -r . --exclude {exclude_args}", cwd=PROJECT_ROOT)

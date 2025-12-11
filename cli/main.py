@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cli.core import (
-    PROJECT_ROOT, STATE_FILE, RestartRequested, GoToRoot,
+    STATE_FILE, RestartRequested, GoToRoot,
     save_state, load_state, select_menu, clear_screen
 )
 from cli.menus import (

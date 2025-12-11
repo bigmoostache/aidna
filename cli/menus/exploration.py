@@ -1,6 +1,6 @@
 import os
 import json
-from cli.core import PROJECT_ROOT, select_menu, show_output, show_file, input_str, input_int
+from cli.core import PROJECT_ROOT, select_menu, show_output, input_str, input_int
 from cli.config import IGNORE_FOLDERS, IGNORE_FILES
 
 # Exploration state
@@ -15,7 +15,7 @@ def load_claude_json(folder_path):
         try:
             with open(claude_file, 'r') as f:
                 return json.load(f)
-        except:
+        except Exception:
             pass
     return {}
 
@@ -50,13 +50,13 @@ def build_tree(path, prefix="", is_last=True, is_root=True, current_depth=0, max
                 if sub_count > 0 and not is_root:
                     new_prefix = prefix + ("    " if is_last else "│   ")
                     lines.append(f"{new_prefix}\033[90m... ({sub_count} items)\033[0m")
-            except:
+            except Exception:
                 pass
             return lines
 
         try:
             items = os.listdir(path)
-        except:
+        except Exception:
             return lines
 
         dirs = sorted([i for i in items if os.path.isdir(os.path.join(path, i)) and i not in IGNORE_FOLDERS and i != 'claude.json'])
@@ -318,8 +318,8 @@ def exploration_menu(menu_stack, initial_selected=0):
         depth_str = str(_max_depth) if _max_depth else '∞'
 
         options = [
-            f"Show file structure",
-            f"CLAUDE.md explorer",
+            "Show file structure",
+            "CLAUDE.md explorer",
             f"Set path [{rel_path}]",
             f"Set depth [{depth_str}]",
         ]
