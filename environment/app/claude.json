@@ -1,14 +1,20 @@
 {
-  "main.py": {
-    "type": "file",
-    "description": "FastAPI application entry point with API routes"
-  },
   "requirements.txt": {
     "type": "file",
-    "description": "Python dependencies for the FastAPI app"
+    "description": "Python dependencies for the FastAPI app",
+    "size_kb": 0.03,
+    "lines": null
+  },
+  "main.py": {
+    "type": "file",
+    "description": "FastAPI application entry point with API routes",
+    "size_kb": 0.16,
+    "lines": 13
   },
   "Dockerfile": {
     "type": "file",
-    "description": "Docker image definition using uv for package management"
+    "description": "Docker image definition using uv for package management",
+    "size_kb": 0.25,
+    "lines": null
   }
 }

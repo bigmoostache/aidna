@@ -1,44 +1,44 @@
 {
-  "CLAUDE.md": {
-    "type": "file",
-    "size_kb": 1.8,
-    "lines": 65,
-    "description": "CLI development guide (architecture, adding menus/rules)"
-  },
   "menus": {
     "type": "folder",
     "size_kb": null,
     "lines": null,
     "description": "Individual menu implementations for the CLI"
   },
+  "main.py": {
+    "type": "file",
+    "size_kb": 3.46,
+    "lines": 118,
+    "description": "CLI entry point and main menu routing"
+  },
+  "config.py": {
+    "type": "file",
+    "size_kb": 1.33,
+    "lines": 65,
+    "description": "Configuration constants for project rules and code extensions"
+  },
+  "core.py": {
+    "type": "file",
+    "size_kb": 7.07,
+    "lines": 242,
+    "description": "Shared CLI functions (menu rendering, key input, screen control)"
+  },
   "rules.py": {
     "type": "file",
-    "size_kb": 7.69,
+    "size_kb": 7.75,
     "lines": 267,
     "description": "Project rules checking logic (file lengths, folder counts, claude.json)"
   },
   "rules_external.py": {
     "type": "file",
-    "size_kb": 3.47,
+    "size_kb": 3.48,
     "lines": 120,
     "description": "External tool checks (radon, ruff, bandit) with graceful degradation"
   },
-  "config.py": {
+  "CLAUDE.md": {
     "type": "file",
-    "size_kb": 1.31,
-    "lines": 64,
-    "description": "Configuration constants for project rules and code extensions"
-  },
-  "main.py": {
-    "type": "file",
-    "size_kb": 3.28,
-    "lines": 113,
-    "description": "CLI entry point and main menu routing"
-  },
-  "core.py": {
-    "type": "file",
-    "size_kb": 6.96,
-    "lines": 246,
-    "description": "Shared CLI functions (menu rendering, key input, screen control)"
+    "size_kb": 2.29,
+    "lines": 75,
+    "description": "CLI development guide (architecture, adding menus/rules)"
   }
 }

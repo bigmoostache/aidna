@@ -1,51 +1,9 @@
 {
-  "mind": {
-    "type": "folder",
-    "size_kb": null,
-    "lines": null,
-    "description": "AI agent logic and decision-making components"
-  },
-  "cli": {
-    "type": "folder",
-    "size_kb": null,
-    "lines": null,
-    "description": "Interactive CLI tool for project management"
-  },
-  "CLAUDE.md": {
-    "type": "file",
-    "size_kb": 1.5,
-    "lines": 52,
-    "description": "CLI usage guide (navigation, menus, commands)"
-  },
   "body": {
     "type": "folder",
     "size_kb": null,
     "lines": null,
     "description": "Docker services for the AI agent runtime"
-  },
-  "README.md": {
-    "type": "file",
-    "size_kb": 0.98,
-    "lines": 33,
-    "description": "Project documentation and overview"
-  },
-  "aidna": {
-    "type": "file",
-    "size_kb": 0.87,
-    "lines": null,
-    "description": "Helper script to interact with the CLI control session"
-  },
-  "environment": {
-    "type": "folder",
-    "size_kb": null,
-    "lines": null,
-    "description": "Infrastructure and environment configuration"
-  },
-  ".env": {
-    "type": "file",
-    "size_kb": 0.02,
-    "lines": null,
-    "description": "Environment variables including PORT_PREFIX"
   },
   ".claude": {
     "type": "folder",
@@ -58,5 +16,53 @@
     "size_kb": 0.46,
     "lines": 19,
     "description": "CLI launcher script"
+  },
+  "environment": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Infrastructure and environment configuration"
+  },
+  "README.md": {
+    "type": "file",
+    "size_kb": 0.98,
+    "lines": 33,
+    "description": "Project documentation and overview"
+  },
+  ".gitignore": {
+    "type": "file",
+    "size_kb": 0.34,
+    "lines": null,
+    "description": "Git configuration to exclude files and directories from version control"
+  },
+  "mind": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "AI agent logic and decision-making components"
+  },
+  "aidna": {
+    "type": "file",
+    "size_kb": 0.87,
+    "lines": null,
+    "description": "Helper script to interact with the CLI control session"
+  },
+  "CLAUDE.md": {
+    "type": "file",
+    "size_kb": 1.84,
+    "lines": 54,
+    "description": "CLI usage guide (navigation, menus, commands)"
+  },
+  ".env": {
+    "type": "file",
+    "size_kb": 0.01,
+    "lines": null,
+    "description": "Environment variables including PORT_PREFIX"
+  },
+  "cli": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Interactive CLI tool for project management"
   }
 }

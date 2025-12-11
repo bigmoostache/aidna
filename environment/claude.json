@@ -1,14 +1,14 @@
 {
-  "app": {
-    "type": "folder",
-    "size_kb": null,
-    "lines": null,
-    "description": "FastAPI application code with live reload support"
-  },
   "services": {
     "type": "folder",
     "size_kb": null,
     "lines": null,
     "description": "Docker compose services (postgres, etc.)"
+  },
+  "app": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "FastAPI application code with live reload support"
   }
 }

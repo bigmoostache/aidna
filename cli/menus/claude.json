@@ -1,4 +1,16 @@
 {
+  "exploration.py": {
+    "type": "file",
+    "size_kb": 11.21,
+    "lines": 339,
+    "description": "Exploration menu (file structure tree)"
+  },
+  "services.py": {
+    "type": "file",
+    "size_kb": 3.31,
+    "lines": 100,
+    "description": "Environment services menu (docker compose up/down/restart)"
+  },
   "__init__.py": {
     "type": "file",
     "size_kb": 0.29,
@@ -7,20 +19,8 @@
   },
   "rules.py": {
     "type": "file",
-    "size_kb": 12.29,
-    "lines": 346,
+    "size_kb": 12.75,
+    "lines": 371,
     "description": "Project rules menu (all checks, external tools integration)"
-  },
-  "services.py": {
-    "type": "file",
-    "size_kb": 0.99,
-    "lines": 30,
-    "description": "Environment services menu (docker compose up/down/restart)"
-  },
-  "exploration.py": {
-    "type": "file",
-    "size_kb": 11.35,
-    "lines": 344,
-    "description": "Exploration menu (file structure tree)"
   }
 }
