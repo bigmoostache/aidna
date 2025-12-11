@@ -2,6 +2,8 @@ import os
 from cli.core import PROJECT_ROOT, select_menu, run_command
 
 SERVICES_DIR = os.path.join(PROJECT_ROOT, "environment", "services")
+BODY_DIR = os.path.join(PROJECT_ROOT, "body")
+MIND_DIR = os.path.join(PROJECT_ROOT, "mind")
 ENV_FILE = os.path.join(PROJECT_ROOT, ".env")
 
 
@@ -59,6 +61,72 @@ def fastapi_menu(menu_stack):
                     run_command("docker port aidna-api 8000 || echo 'Container not found'", cwd=SERVICES_DIR)
 
 
+def body_menu(menu_stack):
+    options = [
+        "Start",
+        "Stop",
+        "Rebuild + Start",
+        "Logs",
+        "Healthcheck",
+    ]
+
+    menu_stack.append({'menu': 'body', 'selected': 0})
+    selected = 0
+    while True:
+        menu_stack[-1]['selected'] = selected
+        choice = select_menu("Body Service", options, selected)
+
+        if choice == -1:
+            menu_stack.pop()
+            break
+        else:
+            selected = choice
+            compose = f"docker compose --env-file {ENV_FILE}"
+            if choice == 0:
+                run_command(f"{compose} up -d", cwd=BODY_DIR)
+            elif choice == 1:
+                run_command(f"{compose} down", cwd=BODY_DIR)
+            elif choice == 2:
+                run_command(f"{compose} up -d --build", cwd=BODY_DIR)
+            elif choice == 3:
+                run_command(f"{compose} logs --tail=50", cwd=BODY_DIR)
+            elif choice == 4:
+                run_command("curl -s http://localhost:8501/health || echo 'Body not responding'", cwd=BODY_DIR)
+
+
+def mind_menu(menu_stack):
+    options = [
+        "Start",
+        "Stop",
+        "Rebuild + Start",
+        "Logs",
+        "Follow logs",
+    ]
+
+    menu_stack.append({'menu': 'mind', 'selected': 0})
+    selected = 0
+    while True:
+        menu_stack[-1]['selected'] = selected
+        choice = select_menu("Mind Service", options, selected)
+
+        if choice == -1:
+            menu_stack.pop()
+            break
+        else:
+            selected = choice
+            compose = f"docker compose --env-file {ENV_FILE}"
+            if choice == 0:
+                run_command(f"{compose} up -d", cwd=MIND_DIR)
+            elif choice == 1:
+                run_command(f"{compose} down", cwd=MIND_DIR)
+            elif choice == 2:
+                run_command(f"{compose} up -d --build", cwd=MIND_DIR)
+            elif choice == 3:
+                run_command(f"{compose} logs --tail=50", cwd=MIND_DIR)
+            elif choice == 4:
+                run_command(f"{compose} logs -f", cwd=MIND_DIR)
+
+
 def services_menu(menu_stack, initial_selected=0):
     options = [
         "Start",
@@ -66,9 +134,12 @@ def services_menu(menu_stack, initial_selected=0):
         "Restart",
         "Rebuild + Start",
         "FastAPI",
+        "Body",
+        "Mind",
         "Healthcheck - Check status of all services",
         "View logs - Show last 50 lines from all containers",
         "Show config - Display resolved docker-compose config",
+        "Reset DB - Stop and remove postgres volume",
     ]
 
     selected = initial_selected
@@ -93,8 +164,14 @@ def services_menu(menu_stack, initial_selected=0):
             elif choice == 4:
                 fastapi_menu(menu_stack)
             elif choice == 5:
-                run_command(f"{compose} ps", cwd=SERVICES_DIR)
+                body_menu(menu_stack)
             elif choice == 6:
-                run_command(f"{compose} logs --tail=50", cwd=SERVICES_DIR)
+                mind_menu(menu_stack)
             elif choice == 7:
+                run_command(f"{compose} ps", cwd=SERVICES_DIR)
+            elif choice == 8:
+                run_command(f"{compose} logs --tail=50", cwd=SERVICES_DIR)
+            elif choice == 9:
                 run_command(f"echo 'Command: {compose} config' && {compose} config", cwd=SERVICES_DIR)
+            elif choice == 10:
+                run_command(f"{compose} down -v", cwd=SERVICES_DIR)

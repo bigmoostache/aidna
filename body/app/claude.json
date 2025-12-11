@@ -1,0 +1,22 @@
+{
+  "Dockerfile": {
+    "type": "file",
+    "description": "Docker build configuration for Body service"
+  },
+  "main.py": {
+    "type": "file",
+    "description": "FastAPI app with memory REST endpoints"
+  },
+  "memory.py": {
+    "type": "file",
+    "description": "Simple dict-based memory store for Mind state"
+  },
+  "requirements.txt": {
+    "type": "file",
+    "description": "Python dependencies for Body service"
+  },
+  "schemas.py": {
+    "type": "file",
+    "description": "Pydantic schemas for memory API"
+  }
+}

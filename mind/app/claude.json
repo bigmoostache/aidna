@@ -1,0 +1,26 @@
+{
+  "Dockerfile": {
+    "type": "file",
+    "description": "Docker build configuration for Mind service"
+  },
+  "body_client.py": {
+    "type": "file",
+    "description": "HTTP client for Body memory API"
+  },
+  "env_client.py": {
+    "type": "file",
+    "description": "HTTP client for Environment task API"
+  },
+  "main.py": {
+    "type": "file",
+    "description": "Main loop that fetches and solves tasks"
+  },
+  "requirements.txt": {
+    "type": "file",
+    "description": "Python dependencies for Mind service"
+  },
+  "solver.py": {
+    "type": "file",
+    "description": "Hard-coded arithmetic task solver"
+  }
+}
