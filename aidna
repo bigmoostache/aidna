@@ -2,7 +2,7 @@
 # Helper script for CLI interaction
 
 SESSION="CONTROL"
-DEFAULT_DELAY=0.3
+DEFAULT_DELAY=0.5
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Ensure session exists with CLI running
