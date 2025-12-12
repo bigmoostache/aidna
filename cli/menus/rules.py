@@ -7,6 +7,7 @@ from cli.config import (
 )
 from cli.core import PROJECT_ROOT, clear_screen, run_command, select_menu, show_output
 from cli.rules import (
+    check_cli_synced,
     check_file_lengths,
     check_folder_counts,
     check_folder_depth,
@@ -333,6 +334,19 @@ def _check_all_rules():
         "Security check skipped (bandit not installed)",
         f"Security issues ({len(check_bandit_security() or [])})",
         "No security issues")
+
+    # CLI sync check (individual mode only)
+    cli_diff = check_cli_synced()
+    if cli_diff is not None:  # Only show in individual mode
+        if cli_diff:
+            lines.append(f"\033[31mCLI out of sync with main ({len(cli_diff)} files):\033[0m")
+            for f in cli_diff[:5]:
+                lines.append(f"  {f}")
+            if len(cli_diff) > 5:
+                lines.append(f"  ... and {len(cli_diff) - 5} more")
+            lines.append("")
+        else:
+            lines.append("\033[32m✓ CLI synced with main\033[0m")
 
     show_output("All Rules Check", lines)
 
