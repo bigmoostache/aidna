@@ -39,6 +39,7 @@ IGNORE_FOLDERS = {
     '.idea',
     '.vscode',
     '.ruff_cache',
+    'individuals',
 }
 
 # Files to ignore during analysis

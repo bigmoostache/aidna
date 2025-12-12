@@ -2,7 +2,7 @@
 # Helper script for CLI interaction
 
 SESSION="CONTROL"
-DEFAULT_DELAY=0.5
+DELAY=0.3
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Ensure session exists with CLI running
@@ -23,15 +23,14 @@ if [ $# -eq 0 ]; then
     tmux capture-pane -t "$SESSION" -p -S -
 else
     keys="$1"
-    delay="${2:-$DEFAULT_DELAY}"
 
     # Split by comma and execute each key
     IFS=',' read -ra KEY_ARRAY <<< "$keys"
     for key in "${KEY_ARRAY[@]}"; do
         tmux send-keys -t "$SESSION" "$key"
-        sleep "$delay"
+        sleep "$DELAY"
     done
-    sleep 1.0  # Wait for any processing to at least start
+    sleep 3.0  # Wait for any processing to at least start
 
     # Capture with full scrollback
     tmux capture-pane -t "$SESSION" -p -S -

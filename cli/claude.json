@@ -7,14 +7,14 @@
   },
   "main.py": {
     "type": "file",
-    "size_kb": 3.49,
-    "lines": 126,
+    "size_kb": 3.93,
+    "lines": 137,
     "description": "CLI entry point and main menu routing"
   },
   "config.py": {
     "type": "file",
-    "size_kb": 1.46,
-    "lines": 73,
+    "size_kb": 1.47,
+    "lines": 74,
     "description": "Configuration constants for project rules and code extensions"
   },
   "core.py": {

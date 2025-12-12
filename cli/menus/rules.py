@@ -5,7 +5,7 @@ from cli.config import (
     MAX_FOLDER_DEPTH,
     MAX_FOLDER_FILES,
 )
-from cli.core import PROJECT_ROOT, run_command, select_menu, show_output
+from cli.core import PROJECT_ROOT, clear_screen, run_command, select_menu, show_output
 from cli.rules import (
     check_file_lengths,
     check_folder_counts,
@@ -260,6 +260,11 @@ def _format_external_check(violations, skip_msg, fail_msg, ok_msg, formatter=Non
 
 
 def _check_all_rules():
+    import sys
+    clear_screen()
+    print("\033[1mRunning checks, please wait...\033[0m\n")
+    sys.stdout.flush()
+
     lines = []
 
     lines += _format_check_result(
