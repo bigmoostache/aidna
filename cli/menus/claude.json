@@ -1,4 +1,10 @@
 {
+  "individuals.py": {
+    "type": "file",
+    "size_kb": 6.23,
+    "lines": 216,
+    "description": "Individuals menu (git worktree management for LUCA and descendants)"
+  },
   "exploration.py": {
     "type": "file",
     "size_kb": 11.21,
@@ -7,20 +13,20 @@
   },
   "services.py": {
     "type": "file",
-    "size_kb": 5.72,
-    "lines": 178,
+    "size_kb": 3.46,
+    "lines": 104,
     "description": "Environment services menu (docker compose up/down/restart)"
   },
   "__init__.py": {
     "type": "file",
-    "size_kb": 0.29,
-    "lines": 8,
+    "size_kb": 0.35,
+    "lines": 9,
     "description": "Menu module exports"
   },
   "rules.py": {
     "type": "file",
-    "size_kb": 12.78,
-    "lines": 383,
+    "size_kb": 12.91,
+    "lines": 388,
     "description": "Project rules menu (all checks, external tools integration)"
   }
 }
