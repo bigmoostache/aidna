@@ -182,11 +182,19 @@ def repair_worktrees_action():
 def sync_cli_from_main():
     """Pull CLI updates from main branch (for individuals only)."""
     show_output("Sync CLI from Main", [
-        "This will fetch and checkout the cli/ folder from main branch.",
+        "This will fetch and checkout the cli/ folder from main branch,",
+        "commit the changes, and push to the remote.",
         "",
         "After sync, press R to restart CLI and apply changes.",
     ])
-    run_command("git fetch origin main && git checkout origin/main -- cli/", cwd=PROJECT_ROOT)
+    run_command(
+        "git fetch origin main && "
+        "git checkout origin/main -- cli/ && "
+        "git add cli/ && "
+        "git commit -m 'Sync CLI from main' && "
+        "git push",
+        cwd=PROJECT_ROOT
+    )
 
 
 def individuals_menu(menu_stack, initial_selected=0):
