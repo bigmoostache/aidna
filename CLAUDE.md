@@ -1,56 +1,39 @@
-# AIDNA Project
+# AIDNA Individual - LUCA
+
+LUCA (Last Universal Common Ancestor) is the base template for all individuals.
+Individuals diverge from LUCA and evolve independently from the main environment branch.
 
 ## Architecture
 
 ```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   ENVIRONMENT   │     │      BODY       │     │      MIND       │
-│   (FastAPI)     │◄────│   (FastAPI)     │◄────│  (Python loop)  │
-│   Port 8500     │     │   Port 8501     │     │   (no port)     │
-└────────┬────────┘     └─────────────────┘     └─────────────────┘
-         │
-    ┌────▼────┐
-    │ Postgres│
-    │Port 8532│
-    └─────────┘
+┌─────────────────┐     ┌─────────────────┐
+│      BODY       │     │      MIND       │
+│   (FastAPI)     │◄────│  (Python loop)  │
+│   Port 8501     │     │   (no port)     │
+└─────────────────┘     └─────────────────┘
 ```
 
 ### Components
 
-- **Environment** (`environment/`): Task provider with PostgreSQL storage
-  - FastAPI app serving task generation and submission endpoints
-  - Seedable arithmetic tasks (addition problems)
-  - Tracks task status: pending → completed/failed
-
-- **Body** (`body/`): Stateful interface between Mind and Environment
+- **Body** (`body/`): Stateful interface for Mind
   - Simple key-value memory store
   - REST API for Mind to read/write state
   - Launched before Mind
 
-- **Mind** (`mind/`): Stateless task solver
-  - Main loop: fetch task → solve → submit → repeat
-  - Hard-coded arithmetic solver
+- **Mind** (`mind/`): Stateless agent
+  - Main loop: perceive → decide → act → repeat
   - Stores progress in Body's memory
 
 ## Quick Start
 
 ```bash
-# 1. Start environment (API + PostgreSQL)
-./aidna "~,a,d"          # Rebuild + Start
+# 1. Start Body
+./aidna "~,a,a,c"        # Services → Body → Rebuild + Start
 
-# 2. Generate tasks
-curl -X POST http://localhost:8500/tasks/generate \
-  -H "Content-Type: application/json" \
-  -d '{"seed": 42, "count": 10}'
+# 2. Start Mind
+./aidna "~,a,b,c"        # Services → Mind → Rebuild + Start
 
-# 3. Start Body
-./aidna "~,a,f,c"        # Body → Rebuild + Start
-
-# 4. Start Mind (will solve all tasks)
-./aidna "~,a,g,c"        # Mind → Rebuild + Start
-
-# 5. Check results
-curl http://localhost:8500/tasks/stats
+# 3. Check memory state
 curl http://localhost:8501/memory
 ```
 
@@ -71,37 +54,23 @@ Use `./aidna` to interact with the project CLI:
 ## CLI Menus
 
 ### Main Menu
-- **[a] Environment services** - Docker compose management
-- **[b] Exploration** - Browse project structure with descriptions
-- **[c] Project rules** - Code quality checks
-- **[d] Exit** - Exit CLI
+- **[a] Services** - Docker compose management (Body, Mind)
+- **[b] Individuals** - Git worktree management
+- **[c] Exploration** - Browse project structure with descriptions
+- **[d] Project rules** - Code quality checks
+- **[e] Exit** - Exit CLI
 
-### Environment Services (`./aidna a`)
-- **Start/Stop/Restart** - Manage docker services
-- **Rebuild + Start** - Rebuild images and start
-- **FastAPI** - API-specific logs and healthcheck
+### Services (`./aidna a`)
 - **Body** - Body service management
 - **Mind** - Mind service management
-- **Reset DB** - Stop and remove postgres volume (fresh start)
 
 ### Ports
 | Service | Container | Host Port |
 |---------|-----------|-----------|
-| Environment API | aidna-api | 8500 |
-| PostgreSQL | aidna-postgres | 8532 |
 | Body | aidna-body | 8501 |
 | Mind | aidna-mind | (none) |
 
 ## API Endpoints
-
-### Environment (port 8500)
-```
-GET  /health                    # Healthcheck
-POST /tasks/generate            # Generate tasks {"seed": int, "count": int}
-GET  /tasks/next                # Get next pending task
-POST /tasks/{id}/submit         # Submit answer {"answer": int}
-GET  /tasks/stats               # Task statistics
-```
 
 ### Body (port 8501)
 ```
@@ -113,7 +82,7 @@ PUT  /memory/{key}              # Set value {"value": "string"}
 
 ## Project Rules
 
-Run `./aidna "~,c,a"` to check all rules:
+Run `./aidna "~,d,a"` to check all rules:
 - Max 700 lines per file
 - Max 7 files per folder
 - Max folder depth of 5
@@ -123,33 +92,14 @@ Run `./aidna "~,c,a"` to check all rules:
 - No linting issues (ruff)
 - No security issues (bandit)
 
-## Directory Structure
+## Creating New Individuals
 
+From the main repository, use the CLI:
+```bash
+./aidna "~,b,b"    # Individuals → Create individual (from LUCA)
 ```
-aidna/
-├── environment/          # Task provider + database
-│   ├── app/             # FastAPI application
-│   │   ├── main.py      # API endpoints
-│   │   ├── db.py        # SQLAlchemy models + connection
-│   │   ├── schemas.py   # Pydantic schemas
-│   │   └── task_service.py  # Task logic
-│   └── services/        # Docker configuration
-│       ├── docker-compose.yml
-│       └── init.sql     # Database schema
-├── body/                # Mind's stateful interface
-│   ├── app/
-│   │   ├── main.py      # Memory API
-│   │   └── memory.py    # Dict-based store
-│   └── docker-compose.yml
-├── mind/                # Stateless task solver
-│   ├── app/
-│   │   ├── main.py      # Main loop
-│   │   ├── solver.py    # Arithmetic solver
-│   │   ├── env_client.py    # Environment API client
-│   │   └── body_client.py   # Body API client
-│   └── docker-compose.yml
-└── cli/                 # Interactive CLI tool
-    ├── main.py          # Entry point
-    ├── core.py          # Shared utilities
-    └── menus/           # Menu implementations
+
+Or manually:
+```bash
+git worktree add individuals/<name> -b <name> luca
 ```

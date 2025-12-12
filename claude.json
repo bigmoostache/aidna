@@ -23,12 +23,6 @@
     "lines": 19,
     "description": "CLI launcher script"
   },
-  "environment": {
-    "type": "folder",
-    "size_kb": null,
-    "lines": null,
-    "description": "Infrastructure and environment configuration"
-  },
   "README.md": {
     "type": "file",
     "size_kb": 0.98,
@@ -55,9 +49,9 @@
   },
   "CLAUDE.md": {
     "type": "file",
-    "size_kb": 5.17,
-    "lines": 155,
-    "description": "CLI usage guide (navigation, menus, commands)"
+    "size_kb": 2.5,
+    "lines": 105,
+    "description": "LUCA individual documentation (architecture, CLI, API)"
   },
   ".env": {
     "type": "file",
@@ -70,5 +64,11 @@
     "size_kb": null,
     "lines": null,
     "description": "Interactive CLI tool for project management"
+  },
+  "individuals": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Git worktrees for individual branches"
   }
 }

@@ -26,7 +26,7 @@ from cli.menus import (
 
 def main_menu(menu_stack, initial_selected=0):
     options = [
-        "Environment services",
+        "Services",
         "Individuals",
         "Exploration",
         "Project rules",
