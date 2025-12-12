@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from cli.core import PROJECT_ROOT, input_str, run_command, select_menu, show_output
+from cli.core import PROJECT_ROOT, RestartRequested, input_str, run_command, select_menu, show_output
 
 INDIVIDUALS_DIR = os.path.join(PROJECT_ROOT, "individuals")
 
@@ -183,9 +183,7 @@ def sync_cli_from_main():
     """Pull CLI updates from main branch (for individuals only)."""
     show_output("Sync CLI from Main", [
         "This will fetch and checkout the cli/ folder from main branch,",
-        "commit the changes, and push to the remote.",
-        "",
-        "After sync, press R to restart CLI and apply changes.",
+        "commit the changes, push to the remote, and restart the CLI.",
     ])
     run_command(
         "git fetch origin main && "
@@ -195,6 +193,7 @@ def sync_cli_from_main():
         "git push",
         cwd=PROJECT_ROOT
     )
+    raise RestartRequested()
 
 
 def individuals_menu(menu_stack, initial_selected=0):
