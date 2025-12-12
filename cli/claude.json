@@ -7,26 +7,26 @@
   },
   "main.py": {
     "type": "file",
-    "size_kb": 3.93,
-    "lines": 137,
+    "size_kb": 5.16,
+    "lines": 168,
     "description": "CLI entry point and main menu routing"
   },
   "config.py": {
     "type": "file",
-    "size_kb": 1.47,
-    "lines": 74,
+    "size_kb": 1.98,
+    "lines": 95,
     "description": "Configuration constants for project rules and code extensions"
   },
   "core.py": {
     "type": "file",
-    "size_kb": 7.07,
-    "lines": 242,
+    "size_kb": 7.43,
+    "lines": 254,
     "description": "Shared CLI functions (menu rendering, key input, screen control)"
   },
   "rules.py": {
     "type": "file",
-    "size_kb": 7.89,
-    "lines": 278,
+    "size_kb": 8.83,
+    "lines": 313,
     "description": "Project rules checking logic (file lengths, folder counts, claude.json)"
   },
   "rules_external.py": {
