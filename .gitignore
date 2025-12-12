@@ -45,7 +45,3 @@ Thumbs.db
 
 # SQLite databases
 *.db
-
-# Individuals worktrees
-individuals/*
-!individuals/.gitkeep
