@@ -39,3 +39,55 @@ class TaskStatsResponse(BaseModel):
     pending: int
     completed: int
     failed: int
+
+
+# === Individual Schemas ===
+
+
+class IndividualRegisterRequest(BaseModel):
+    id: str
+    name: str
+    body_url: str
+
+
+class IndividualHeartbeatRequest(BaseModel):
+    energy: float
+    age: int
+    tasks_solved: int
+    alive: bool
+
+
+class IndividualResponse(BaseModel):
+    id: str
+    name: str
+    body_url: str
+    registered_at: str
+    last_heartbeat: str
+    energy: float
+    age: int
+    tasks_solved: int
+    alive: bool
+
+    class Config:
+        from_attributes = True
+
+
+class IndividualsListResponse(BaseModel):
+    individuals: list[IndividualResponse]
+
+
+# === Sacrifice Schemas ===
+
+
+class SacrificeCheckRequest(BaseModel):
+    min_individuals: int = 2
+
+
+class SacrificeCheckResponse(BaseModel):
+    sacrificed: bool
+    victim: IndividualResponse | None = None
+    reason: str | None = None
+
+
+class SacrificeHistoryResponse(BaseModel):
+    victims: list[IndividualResponse]

@@ -2,7 +2,7 @@ import os
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, Float, Integer, String
+from sqlalchemy import Boolean, DateTime, Float, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -41,3 +41,19 @@ class Task(Base):
     status: Mapped[str] = mapped_column(String(20), default="pending")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     solved_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
+class Individual(Base):
+    """Tracks registered individuals in the environment."""
+
+    __tablename__ = "individuals"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)  # UUID from individual
+    name: Mapped[str] = mapped_column(String(64), nullable=False)  # Branch name (e.g., "luca")
+    body_url: Mapped[str] = mapped_column(String(256), nullable=False)
+    registered_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    last_heartbeat: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    energy: Mapped[float] = mapped_column(Float, default=100.0)
+    age: Mapped[int] = mapped_column(Integer, default=0)
+    tasks_solved: Mapped[int] = mapped_column(Integer, default=0)
+    alive: Mapped[bool] = mapped_column(Boolean, default=True)
