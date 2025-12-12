@@ -16,8 +16,8 @@ from schemas import (
     RunResponse,
     StateResponse,
 )
-from state import state
 from starlette.middleware.base import BaseHTTPMiddleware
+from state import state
 
 app = FastAPI(title="AIDNA Body")
 
