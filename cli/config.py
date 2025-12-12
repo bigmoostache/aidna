@@ -63,6 +63,10 @@ IGNORE_FILES = {
     '.state.json',
     '.DS_Store',
     'uv.lock',
+    '.env',
+    '.gitignore',
+    'aidna',
+    'cli.sh',
     '.git',  # In worktrees, .git is a file not a directory
 }
 
