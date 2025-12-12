@@ -5,6 +5,7 @@ import sys
 # Add project root to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from cli.config import MODE
 from cli.core import (
     STATE_FILE,
     GoToRoot,
@@ -21,47 +22,77 @@ from cli.menus import (
     individuals_menu,
     rules_menu,
     services_menu,
+    sync_cli_from_main,
 )
 
 
 def main_menu(menu_stack, initial_selected=0):
-    options = [
-        "Services",
-        "Individuals",
-        "Exploration",
-        "Project rules",
-        "Exit",
-    ]
+    if MODE == 'environment':
+        options = [
+            "Environment services",
+            "Individuals",
+            "Exploration",
+            "Project rules",
+            "Exit",
+        ]
+    else:  # individual mode
+        options = [
+            "Services",
+            "Sync CLI from main",
+            "Exploration",
+            "Project rules",
+            "Exit",
+        ]
 
     selected = initial_selected
     while True:
         menu_stack[-1]['selected'] = selected
-        choice = select_menu("Project CLI", options, selected)
+        title = "Project CLI" if MODE == 'environment' else "Individual CLI"
+        choice = select_menu(title, options, selected)
 
         if choice == -1:  # Back from root = Restart
             raise RestartRequested()
-        elif choice == 4:  # Exit
+        elif choice == 4:  # Exit (same index in both modes)
             clear_screen()
             break
         else:
             selected = choice
             menu_stack[-1]['selected'] = selected
-            if choice == 0:
-                menu_stack.append({'menu': 'services', 'selected': 0})
-                services_menu(menu_stack)
-                menu_stack.pop()
-            elif choice == 1:
-                menu_stack.append({'menu': 'individuals', 'selected': 0})
-                individuals_menu(menu_stack)
-                menu_stack.pop()
-            elif choice == 2:
-                menu_stack.append({'menu': 'exploration', 'selected': 0})
-                exploration_menu(menu_stack)
-                menu_stack.pop()
-            elif choice == 3:
-                menu_stack.append({'menu': 'rules', 'selected': 0})
-                rules_menu(menu_stack)
-                menu_stack.pop()
+
+            if MODE == 'environment':
+                # Environment mode handlers
+                if choice == 0:
+                    menu_stack.append({'menu': 'services', 'selected': 0})
+                    services_menu(menu_stack)
+                    menu_stack.pop()
+                elif choice == 1:
+                    menu_stack.append({'menu': 'individuals', 'selected': 0})
+                    individuals_menu(menu_stack)
+                    menu_stack.pop()
+                elif choice == 2:
+                    menu_stack.append({'menu': 'exploration', 'selected': 0})
+                    exploration_menu(menu_stack)
+                    menu_stack.pop()
+                elif choice == 3:
+                    menu_stack.append({'menu': 'rules', 'selected': 0})
+                    rules_menu(menu_stack)
+                    menu_stack.pop()
+            else:
+                # Individual mode handlers
+                if choice == 0:
+                    menu_stack.append({'menu': 'services', 'selected': 0})
+                    services_menu(menu_stack)
+                    menu_stack.pop()
+                elif choice == 1:
+                    sync_cli_from_main()
+                elif choice == 2:
+                    menu_stack.append({'menu': 'exploration', 'selected': 0})
+                    exploration_menu(menu_stack)
+                    menu_stack.pop()
+                elif choice == 3:
+                    menu_stack.append({'menu': 'rules', 'selected': 0})
+                    rules_menu(menu_stack)
+                    menu_stack.pop()
 
 
 def run_from_state(state):

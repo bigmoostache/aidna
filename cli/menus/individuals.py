@@ -179,6 +179,16 @@ def repair_worktrees_action():
     run_command("git worktree repair", cwd=PROJECT_ROOT)
 
 
+def sync_cli_from_main():
+    """Pull CLI updates from main branch (for individuals only)."""
+    show_output("Sync CLI from Main", [
+        "This will fetch and checkout the cli/ folder from main branch.",
+        "",
+        "After sync, press R to restart CLI and apply changes.",
+    ])
+    run_command("git fetch origin main && git checkout origin/main -- cli/", cwd=PROJECT_ROOT)
+
+
 def individuals_menu(menu_stack, initial_selected=0):
     options = [
         "List worktrees",

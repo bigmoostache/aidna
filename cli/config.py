@@ -1,5 +1,21 @@
 # Project rules configuration
+import os
 
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def get_mode():
+    """Detect CLI mode based on folder structure."""
+    if os.path.isdir(os.path.join(PROJECT_ROOT, 'environment')):
+        return 'environment'
+    elif os.path.isdir(os.path.join(PROJECT_ROOT, 'body')):
+        return 'individual'
+    return 'unknown'
+
+
+MODE = get_mode()
+
+# Rules configuration
 MAX_FILE_LINES = 700
 MAX_FOLDER_FILES = 8
 MAX_FOLDER_DEPTH = 5
@@ -39,6 +55,7 @@ IGNORE_FOLDERS = {
     '.idea',
     '.vscode',
     '.ruff_cache',
+    'individuals',
 }
 
 # Files to ignore during analysis
