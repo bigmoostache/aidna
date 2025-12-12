@@ -276,3 +276,37 @@ def check_hardcoded_secrets():
                 continue
 
     return violations
+
+
+def check_cli_synced():
+    """Check if cli/ folder matches origin/main (for individuals only).
+
+    Returns:
+        None if not in individual mode or git fails
+        [] if synced (no differences)
+        list of changed files if out of sync
+    """
+    import subprocess
+    from cli.config import MODE
+
+    if MODE != 'individual':
+        return None
+
+    # Fetch latest from main
+    result = subprocess.run(
+        ["git", "fetch", "origin", "main"],
+        capture_output=True, text=True, cwd=PROJECT_ROOT
+    )
+    if result.returncode != 0:
+        return None
+
+    # Compare cli/ with origin/main
+    result = subprocess.run(
+        ["git", "diff", "--name-only", "origin/main", "--", "cli/"],
+        capture_output=True, text=True, cwd=PROJECT_ROOT
+    )
+    if result.returncode != 0:
+        return None
+
+    changed_files = [f for f in result.stdout.strip().split('\n') if f]
+    return changed_files
