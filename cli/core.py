@@ -19,6 +19,17 @@ class GoToRoot(Exception):
     pass
 
 
+def get_current_branch():
+    """Get the current git branch name."""
+    result = subprocess.run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+        capture_output=True, text=True, cwd=PROJECT_ROOT
+    )
+    if result.returncode == 0:
+        return result.stdout.strip()
+    return "unknown"
+
+
 def save_state(menu_stack):
     with open(STATE_FILE, 'w') as f:
         json.dump(menu_stack, f)
@@ -74,8 +85,9 @@ def render_menu(title, options, selected):
     cols, lines = get_terminal_size()
     sys.stdout.write("\033[H")
 
+    branch = get_current_branch()
     output_lines = []
-    output_lines.append(f"\033[1m{title}\033[0m")
+    output_lines.append(f"\033[1m{title}\033[0m \033[90m({branch})\033[0m")
     output_lines.append("")
     for i, option in enumerate(options):
         key = get_menu_key(i)
