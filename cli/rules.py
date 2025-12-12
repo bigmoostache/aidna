@@ -279,7 +279,7 @@ def check_hardcoded_secrets():
 
 
 def check_cli_synced():
-    """Check if cli/ folder matches origin/main (for individuals only).
+    """Check if cli/, aidna, cli.sh match origin/main (for individuals only).
 
     Returns:
         None if not in individual mode or git fails
@@ -287,6 +287,7 @@ def check_cli_synced():
         list of changed files if out of sync
     """
     import subprocess
+
     from cli.config import MODE
 
     if MODE != 'individual':
@@ -300,9 +301,9 @@ def check_cli_synced():
     if result.returncode != 0:
         return None
 
-    # Compare cli/ with origin/main
+    # Compare cli/, aidna, cli.sh with origin/main
     result = subprocess.run(
-        ["git", "diff", "--name-only", "origin/main", "--", "cli/"],
+        ["git", "diff", "--name-only", "origin/main", "--", "cli/", "aidna", "cli.sh"],
         capture_output=True, text=True, cwd=PROJECT_ROOT
     )
     if result.returncode != 0:

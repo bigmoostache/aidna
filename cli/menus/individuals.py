@@ -1,7 +1,14 @@
 import os
 import subprocess
 
-from cli.core import PROJECT_ROOT, RestartRequested, input_str, run_command, select_menu, show_output
+from cli.core import (
+    PROJECT_ROOT,
+    RestartRequested,
+    input_str,
+    run_command,
+    select_menu,
+    show_output,
+)
 
 INDIVIDUALS_DIR = os.path.join(PROJECT_ROOT, "individuals")
 
@@ -182,13 +189,13 @@ def repair_worktrees_action():
 def sync_cli_from_main():
     """Pull CLI updates from main branch (for individuals only)."""
     show_output("Sync CLI from Main", [
-        "This will fetch and checkout the cli/ folder from main branch,",
-        "commit the changes, push to the remote, and restart the CLI.",
+        "This will fetch and checkout cli/, aidna, and cli.sh from main,",
+        "commit the changes, and restart the CLI.",
     ])
     run_command(
         "git fetch origin main && "
-        "git checkout origin/main -- cli/ && "
-        "git add cli/ && "
+        "git checkout origin/main -- cli/ aidna cli.sh && "
+        "git add cli/ aidna cli.sh && "
         "(git diff --cached --quiet || git commit -m 'Sync CLI from main')",
         cwd=PROJECT_ROOT
     )
