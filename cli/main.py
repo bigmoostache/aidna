@@ -18,6 +18,7 @@ from cli.menus import (
     claude_md_menu,
     exploration_menu,
     individual_checks_menu,
+    individuals_menu,
     rules_menu,
     services_menu,
 )
@@ -26,6 +27,7 @@ from cli.menus import (
 def main_menu(menu_stack, initial_selected=0):
     options = [
         "Environment services",
+        "Individuals",
         "Exploration",
         "Project rules",
         "Exit",
@@ -38,7 +40,7 @@ def main_menu(menu_stack, initial_selected=0):
 
         if choice == -1:  # Back from root = Restart
             raise RestartRequested()
-        elif choice == 3:  # Exit
+        elif choice == 4:  # Exit
             clear_screen()
             break
         else:
@@ -49,10 +51,14 @@ def main_menu(menu_stack, initial_selected=0):
                 services_menu(menu_stack)
                 menu_stack.pop()
             elif choice == 1:
+                menu_stack.append({'menu': 'individuals', 'selected': 0})
+                individuals_menu(menu_stack)
+                menu_stack.pop()
+            elif choice == 2:
                 menu_stack.append({'menu': 'exploration', 'selected': 0})
                 exploration_menu(menu_stack)
                 menu_stack.pop()
-            elif choice == 2:
+            elif choice == 3:
                 menu_stack.append({'menu': 'rules', 'selected': 0})
                 rules_menu(menu_stack)
                 menu_stack.pop()
@@ -80,6 +86,11 @@ def run_from_state(state):
             main_menu(menu_stack, menu_stack[-1].get('selected', 0))
     elif current['menu'] == 'rules':
         rules_menu(menu_stack, current.get('selected', 0))
+        menu_stack.pop()
+        if menu_stack:
+            main_menu(menu_stack, menu_stack[-1].get('selected', 0))
+    elif current['menu'] == 'individuals':
+        individuals_menu(menu_stack, current.get('selected', 0))
         menu_stack.pop()
         if menu_stack:
             main_menu(menu_stack, menu_stack[-1].get('selected', 0))
