@@ -1,6 +1,5 @@
 from uuid import UUID
 
-from services import individual_service, sacrifice_service, task_service
 from db import Individual, get_db
 from fastapi import Depends, FastAPI, HTTPException
 from schemas import (
@@ -18,6 +17,7 @@ from schemas import (
     TaskResponse,
     TaskStatsResponse,
 )
+from services import individual_service, sacrifice_service, task_service
 from sqlalchemy.ext.asyncio import AsyncSession
 
 app = FastAPI(title="AIDNA Environment")
