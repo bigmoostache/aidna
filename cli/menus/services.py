@@ -1,17 +1,23 @@
 import os
 
-from cli.core import PROJECT_ROOT, run_command, select_menu
+from cli.config import MODE, PROJECT_ROOT
+from cli.core import run_command, select_menu
 
-SERVICES_DIR = os.path.join(PROJECT_ROOT, "environment", "services")
 ENV_FILE = os.path.join(PROJECT_ROOT, ".env")
 
+# =============================================================================
+# ENVIRONMENT MODE - FastAPI + Postgres services
+# =============================================================================
 
-def get_compose_cmd():
-    """Get docker compose command with env file."""
+SERVICES_DIR = os.path.join(PROJECT_ROOT, "environment", "services")
+
+
+def _get_env_compose_cmd():
+    """Get docker compose command with env file for environment."""
     return f"docker compose --env-file {ENV_FILE}"
 
 
-def get_api_port():
+def _get_api_port():
     """Get the API port from running docker container."""
     import subprocess
     try:
@@ -20,7 +26,6 @@ def get_api_port():
             capture_output=True, text=True
         )
         if result.returncode == 0:
-            # Output is like "0.0.0.0:8500\n[::]:8500", take first line
             first_line = result.stdout.strip().split("\n")[0]
             port = first_line.split(":")[-1]
             return port
@@ -47,20 +52,20 @@ def fastapi_menu(menu_stack):
             break
         else:
             selected = choice
-            compose = get_compose_cmd()
+            compose = _get_env_compose_cmd()
             if choice == 0:
                 run_command(f"{compose} logs --tail=50 api", cwd=SERVICES_DIR)
             elif choice == 1:
                 run_command(f"{compose} restart api", cwd=SERVICES_DIR)
             elif choice == 2:
-                port = get_api_port()
+                port = _get_api_port()
                 if port:
                     run_command(f"curl -s http://localhost:{port}/", cwd=SERVICES_DIR)
                 else:
                     run_command("docker port aidna-api 8000 || echo 'Container not found'", cwd=SERVICES_DIR)
 
 
-def services_menu(menu_stack, initial_selected=0):
+def _env_services_menu(menu_stack, initial_selected=0):
     options = [
         "Start",
         "Stop",
@@ -83,7 +88,7 @@ def services_menu(menu_stack, initial_selected=0):
         else:
             selected = choice
             menu_stack[-1]['selected'] = selected
-            compose = get_compose_cmd()
+            compose = _get_env_compose_cmd()
             if choice == 0:
                 run_command(f"{compose} up -d", cwd=SERVICES_DIR)
             elif choice == 1:
@@ -102,3 +107,115 @@ def services_menu(menu_stack, initial_selected=0):
                 run_command(f"echo 'Command: {compose} config' && {compose} config", cwd=SERVICES_DIR)
             elif choice == 8:
                 run_command(f"{compose} down -v", cwd=SERVICES_DIR)
+
+
+# =============================================================================
+# INDIVIDUAL MODE - Body + Mind services
+# =============================================================================
+
+BODY_DIR = os.path.join(PROJECT_ROOT, "body")
+MIND_DIR = os.path.join(PROJECT_ROOT, "mind")
+
+
+def _get_ind_compose_cmd():
+    """Get docker compose command with env file for individual."""
+    return f"docker compose --env-file {ENV_FILE}"
+
+
+def body_menu(menu_stack):
+    options = [
+        "Start",
+        "Stop",
+        "Rebuild + Start",
+        "Logs",
+        "Healthcheck",
+    ]
+
+    menu_stack.append({'menu': 'body', 'selected': 0})
+    selected = 0
+    while True:
+        menu_stack[-1]['selected'] = selected
+        choice = select_menu("Body Service", options, selected)
+
+        if choice == -1:
+            menu_stack.pop()
+            break
+        else:
+            selected = choice
+            compose = _get_ind_compose_cmd()
+            if choice == 0:
+                run_command(f"{compose} up -d", cwd=BODY_DIR)
+            elif choice == 1:
+                run_command(f"{compose} down", cwd=BODY_DIR)
+            elif choice == 2:
+                run_command(f"{compose} up -d --build", cwd=BODY_DIR)
+            elif choice == 3:
+                run_command(f"{compose} logs --tail=50", cwd=BODY_DIR)
+            elif choice == 4:
+                run_command("curl -s http://localhost:8501/health || echo 'Body not responding'", cwd=BODY_DIR)
+
+
+def mind_menu(menu_stack):
+    options = [
+        "Start",
+        "Stop",
+        "Rebuild + Start",
+        "Logs",
+        "Follow logs",
+    ]
+
+    menu_stack.append({'menu': 'mind', 'selected': 0})
+    selected = 0
+    while True:
+        menu_stack[-1]['selected'] = selected
+        choice = select_menu("Mind Service", options, selected)
+
+        if choice == -1:
+            menu_stack.pop()
+            break
+        else:
+            selected = choice
+            compose = _get_ind_compose_cmd()
+            if choice == 0:
+                run_command(f"{compose} up -d", cwd=MIND_DIR)
+            elif choice == 1:
+                run_command(f"{compose} down", cwd=MIND_DIR)
+            elif choice == 2:
+                run_command(f"{compose} up -d --build", cwd=MIND_DIR)
+            elif choice == 3:
+                run_command(f"{compose} logs --tail=50", cwd=MIND_DIR)
+            elif choice == 4:
+                run_command(f"{compose} logs -f", cwd=MIND_DIR)
+
+
+def _individual_services_menu(menu_stack, initial_selected=0):
+    options = [
+        "Body",
+        "Mind",
+    ]
+
+    selected = initial_selected
+    while True:
+        menu_stack[-1]['selected'] = selected
+        choice = select_menu("Services", options, selected)
+
+        if choice == -1:
+            break
+        else:
+            selected = choice
+            menu_stack[-1]['selected'] = selected
+            if choice == 0:
+                body_menu(menu_stack)
+            elif choice == 1:
+                mind_menu(menu_stack)
+
+
+# =============================================================================
+# DISPATCHER - Routes to correct menu based on MODE
+# =============================================================================
+
+def services_menu(menu_stack, initial_selected=0):
+    if MODE == 'environment':
+        _env_services_menu(menu_stack, initial_selected)
+    else:
+        _individual_services_menu(menu_stack, initial_selected)
