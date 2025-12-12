@@ -1,10 +1,4 @@
 {
-  "body": {
-    "type": "folder",
-    "size_kb": null,
-    "lines": null,
-    "description": "Docker services for the AI agent runtime"
-  },
   ".claude": {
     "type": "folder",
     "size_kb": null,
@@ -27,7 +21,7 @@
     "type": "folder",
     "size_kb": null,
     "lines": null,
-    "description": "Infrastructure and environment configuration"
+    "description": "Task provider with PostgreSQL storage"
   },
   "README.md": {
     "type": "file",
@@ -40,12 +34,6 @@
     "size_kb": 0.37,
     "lines": null,
     "description": "Git configuration to exclude files and directories from version control"
-  },
-  "mind": {
-    "type": "folder",
-    "size_kb": null,
-    "lines": null,
-    "description": "AI agent logic and decision-making components"
   },
   "aidna": {
     "type": "file",
@@ -70,5 +58,11 @@
     "size_kb": null,
     "lines": null,
     "description": "Interactive CLI tool for project management"
+  },
+  "individuals": {
+    "type": "folder",
+    "size_kb": null,
+    "lines": null,
+    "description": "Git worktrees for individual branches (Body + Mind evolve here)"
   }
 }
