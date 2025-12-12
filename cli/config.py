@@ -63,6 +63,7 @@ IGNORE_FILES = {
     '.state.json',
     '.DS_Store',
     'uv.lock',
+    '.git',  # In worktrees, .git is a file not a directory
 }
 
 # File extensions to ignore during analysis

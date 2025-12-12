@@ -1,9 +1,10 @@
 #!/bin/bash
 # Helper script for CLI interaction
 
-SESSION="CONTROL"
-DELAY=0.3
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+BRANCH=$(git -C "$SCRIPT_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
+SESSION="aidna-${BRANCH}"
+DELAY=0.3
 
 # Ensure session exists with CLI running
 ensure_session() {
