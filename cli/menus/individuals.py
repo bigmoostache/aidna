@@ -189,8 +189,7 @@ def sync_cli_from_main():
         "git fetch origin main && "
         "git checkout origin/main -- cli/ && "
         "git add cli/ && "
-        "(git diff --cached --quiet || git commit -m 'Sync CLI from main') && "
-        "git push",
+        "(git diff --cached --quiet || git commit -m 'Sync CLI from main')",
         cwd=PROJECT_ROOT
     )
     raise RestartRequested()
