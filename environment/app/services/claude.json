@@ -1,0 +1,9 @@
+{
+  "description": "Business logic services for environment API",
+  "entries": {
+    "__init__.py": "Service module exports",
+    "individual_service.py": "Individual registration and heartbeat management",
+    "sacrifice_service.py": "Selection and sacrifice logic for individuals",
+    "task_service.py": "Task generation, retrieval, and submission handling"
+  }
+}

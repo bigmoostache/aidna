@@ -1,8 +1,6 @@
 from uuid import UUID
 
-import individual_service
-import sacrifice_service
-import task_service
+from services import individual_service, sacrifice_service, task_service
 from db import Individual, get_db
 from fastapi import Depends, FastAPI, HTTPException
 from schemas import (
