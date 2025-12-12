@@ -15,6 +15,22 @@ services:
       retries: 3
       start_period: 10s
 
+  mind:
+    build:
+      context: ./mind
+    container_name: aidna-mind
+    environment:
+      - ENVIRONMENT_URL=http://aidna-api:8000
+      - BODY_URL=http://aidna-body:8000
+      - POLL_INTERVAL=1.0
+      - LOOP_DELAY=0.1
+    volumes:
+      - ./mind:/app
+    restart: unless-stopped
+    depends_on:
+      body:
+        condition: service_healthy
+
 networks:
   default:
     name: aidna-network
