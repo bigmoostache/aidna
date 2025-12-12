@@ -42,3 +42,42 @@ async def end_run() -> str:
         response = await client.post(f"{BODY_URL}/runs/end")
         response.raise_for_status()
         return response.json()["run_id"]
+
+
+# === State/Energy Methods ===
+
+
+async def get_state() -> dict:
+    """Get full body state including energy."""
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{BODY_URL}/state")
+        response.raise_for_status()
+        return response.json()
+
+
+async def is_alive() -> bool:
+    """Check if body is still alive."""
+    state = await get_state()
+    return state["alive"]
+
+
+async def consume_energy(amount: float = 1.0) -> dict:
+    """Consume energy and return status."""
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{BODY_URL}/energy/consume",
+            json={"amount": amount},
+        )
+        response.raise_for_status()
+        return response.json()
+
+
+async def gain_energy(amount: float) -> dict:
+    """Gain energy from reward."""
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{BODY_URL}/energy/gain",
+            json={"amount": amount},
+        )
+        response.raise_for_status()
+        return response.json()

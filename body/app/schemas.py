@@ -50,3 +50,36 @@ class RunReport(BaseModel):
     total_requests: int
     memory_operations: MemoryOps
     requests: list[RequestLog]
+
+
+# === State/Energy Schemas ===
+
+
+class StateResponse(BaseModel):
+    energy: float
+    age: int
+    alive: bool
+
+
+class EnergyResponse(BaseModel):
+    energy: float
+    alive: bool
+
+
+class ConsumeRequest(BaseModel):
+    amount: float = 1.0
+
+
+class ConsumeResponse(BaseModel):
+    consumed: float
+    energy: float
+    alive: bool
+
+
+class GainRequest(BaseModel):
+    amount: float
+
+
+class GainResponse(BaseModel):
+    gained: float
+    energy: float

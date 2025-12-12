@@ -4,7 +4,19 @@ import uuid
 import logging_db
 from fastapi import FastAPI, HTTPException, Request, Response
 from memory import memory
-from schemas import MemoryValue, RunListResponse, RunReport, RunResponse
+from schemas import (
+    ConsumeRequest,
+    ConsumeResponse,
+    EnergyResponse,
+    GainRequest,
+    GainResponse,
+    MemoryValue,
+    RunListResponse,
+    RunReport,
+    RunResponse,
+    StateResponse,
+)
+from state import state
 from starlette.middleware.base import BaseHTTPMiddleware
 
 app = FastAPI(title="AIDNA Body")
@@ -79,6 +91,7 @@ def start_run():
     current_run_id = str(uuid.uuid4())
     logging_db.start_run(current_run_id)
     memory.clear()  # Clear memory for fresh run
+    state.reset()  # Reset state (energy, age) for fresh run
     return RunResponse(run_id=current_run_id, status="started")
 
 
@@ -153,3 +166,32 @@ def delete_memory(key: str):
 def clear_memory():
     memory.clear()
     return {"cleared": True}
+
+
+# === State/Energy Operations ===
+
+
+@app.get("/state", response_model=StateResponse)
+def get_state():
+    """Get full body state including energy."""
+    return StateResponse(**state.to_dict())
+
+
+@app.get("/energy", response_model=EnergyResponse)
+def get_energy():
+    """Get current energy level."""
+    return EnergyResponse(energy=state.energy, alive=state.alive)
+
+
+@app.post("/energy/consume", response_model=ConsumeResponse)
+def consume_energy(request: ConsumeRequest):
+    """Consume energy. Returns alive status."""
+    alive = state.consume_energy(request.amount)
+    return ConsumeResponse(consumed=request.amount, energy=state.energy, alive=alive)
+
+
+@app.post("/energy/gain", response_model=GainResponse)
+def gain_energy(request: GainRequest):
+    """Gain energy from rewards."""
+    state.gain_energy(request.amount)
+    return GainResponse(gained=request.amount, energy=state.energy)

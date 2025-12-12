@@ -24,6 +24,12 @@ services:
       - BODY_URL=http://aidna-body:8000
       - POLL_INTERVAL=1.0
       - LOOP_DELAY=0.1
+      - ENERGY_COST_OBSERVE=1.0
+      - ENERGY_COST_ACT=1.0
+      - ENERGY_REWARD_CORRECT=5.0
+      - ENERGY_REWARD_WRONG=0.0
+      - INDIVIDUAL_NAME=luca
+      - HEARTBEAT_INTERVAL=10
     volumes:
       - ./mind:/app
     restart: unless-stopped
